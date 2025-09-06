@@ -1,0 +1,65 @@
+{
+  "name": "adb-typeorm",
+  "version": "1.0.0",
+  "description": "ADB-TypeORM - Enhanced TypeORM framework for AI design and convenient management",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "typeorm",
+    "orm",
+    "database",
+    "decorator",
+    "ai",
+    "enhanced",
+    "metadata",
+    "typescript"
+  ],
+  "author": "ADB Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/adb-typeorm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/adb-typeorm/issues"
+  },
+  "homepage": "https://github.com/your-username/adb-typeorm#readme",
+  "dependencies": {
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.25"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.0.0",
+    "@types/node": "^22.15.29",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "typeorm": ">=0.3.25"
+  },
+  "peerDependenciesMeta": {
+    "typeorm": {
+      "optional": false
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
