@@ -398,14 +398,6 @@ const allEnums = await EnumMetadataService.getAllEnums(dataSource);
 - **元数据持久化**：枚举配置可选择性持久化到 `__enums__` 表
 - **AI 优化**：专为 AI 代码生成和可视化设计优化
 
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
-## 📄 许可证
-
-MIT License
-
 ## 📚 目录结构
 
 ```
@@ -451,32 +443,6 @@ ADB-TypeORM/
 - [API 文档](#🛠️-api-文档) - 完整的 API 参考
 - [工具类](#🔧-工具类) - 各种工具类和服务
 
-## 📝 更新日志
-
-### v1.0.0 (2025-01-05)
-- ✨ **新增功能**
-  - ADBEnum 类替代传统 TypeScript 枚举
-  - 枚举元数据的数据库持久化支持
-  - 智能的装饰器属性元数据收集机制
-  - 完整的 EntityInfo、ColumnInfo、EnumInfo 装饰器体系
-  - EnumMetadata 实体用于枚举信息持久化
-- 🔄 **重要更新**
-  - 统一多选配置属性为 `isMultiple`
-  - 枚举元数据表名统一为 `__enums__`
-  - CustomEnum 重命名为 ADBEnum
-  - 核心实体注释国际化（英文）
-- 🛠️ **技术改进**
-  - 修复 TypeScript 动态属性访问问题
-  - 增强装饰器元数据收集机制
-  - 改进属性类型定义（使用 `!` 断言符号）
-- ✅ **测试覆盖**
-  - 完善的 ADBEnum 单元测试
-  - EntityInfo 和 ColumnInfo 装饰器功能测试
-  - Jest 测试框架配置
-- 📝 **文档更新**
-  - 完整的 API 文档和使用示例
-  - 项目结构说明和快速导航
-  - 详细的配置要求和最佳实践
 
 ## ⚠️ 重要提示
 
@@ -487,15 +453,13 @@ ADB-TypeORM/
 
 ### 开发环境设置
 ```bash
-# 设置代理（如需要）
-export http_proxy=http://127.0.0.1:7897
-export https_proxy=http://127.0.0.1:7897
-
 # 安装依赖
 yarn install
 
 # 构建项目
 yarn build
+
+npx tsc
 
 # 运行测试
 yarn test
