@@ -16,7 +16,15 @@
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
     "useDefineForClassFields": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": false
+  },
+  "ts-node": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
     "src/**/*"

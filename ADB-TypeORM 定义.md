@@ -1,6 +1,6 @@
 # ADB-TypeORM 定义
 
-ADB-TypeORM 基于 TypeORM 并根据 适配AI设计 和 便捷管理 的需要进行定制增强。
+基于并完全兼容 TypeORM，为适配 AI 设计和便捷管理的需要而设计。
 
 ## 1. 扩展 Entity Info
 
@@ -10,11 +10,15 @@ ADB-TypeORM 基于 TypeORM 并根据 适配AI设计 和 便捷管理 的需要�
 interface EntityInfoOptions {
   id: string;                    // 实体唯一标识，由设计器自动分配的短UUID
   code: string;                  // 唯一识别码，使用:表示多级，如: "user:admin:super"
-  label: string;                 // 显示名称 ，注意：不是comment，因为TypeORM自带comment
-  status: 'enabled' | 'disabled' | 'archived';  // 状态：启用/禁用/归档，默认 enabled
-  isLocked: boolean;             // 锁定/解锁状态，默认 false
-  createdAt: Date;               // 创建时间，datetime格式，由设计器自动生成
-  updatedAt: Date;               // 更新时间，datetime格式，由设计器自动生成
+  label: string;                 // 显示名称，注意：不是comment，因为TypeORM自带comment
+  status?: 'enabled' | 'disabled' | 'archived';  // 状态：启用/禁用/归档，默认 enabled
+  isLocked?: boolean;            // 锁定/解锁状态，默认 false
+  createdAt?: Date;              // 创建时间，datetime格式，由设计器自动生成
+  updatedAt?: Date;              // 更新时间，datetime格式，由设计器自动生成
+  name?: string;                 // 实体名称（兼容旧版本）
+  description?: string;          // 实体描述
+  version?: string;              // 版本号
+  tags?: string[];               // 标签数组
 }
 ```
 
@@ -33,22 +37,34 @@ interface EntityInfoOptions {
 ```typescript 
   @Entity("users") // 映射到 users 表
   @EntityInfo({
-    id: "7h9j4v6w3p5q9b2d",
+    id: "user-entity-001",
     code: "user:admin:super",
-    name: "用户实体",
+    label: "用户实体",
     description: "系统用户信息实体",
     version: "1.0.0",
     tags: ["user", "auth", "admin"]
   })
   export class User {
     @PrimaryGeneratedColumn() // 自增主键
-    id: number;
+    @ColumnInfo({
+      id: "field_id_001",
+      label: "主键ID"
+    })
+    id!: number;
 
     @Column({ length: 50, unique: true }) // 字符串字段，长度50，唯一
-    username: string;
+    @ColumnInfo({
+      id: "field_username_001",
+      label: "用户名"
+    })
+    username!: string;
 
     @Column({ type: "int", default: 0 }) // 整数字段，默认值0
-    age: number;
+    @ColumnInfo({
+      id: "field_age_001",
+      label: "年龄"
+    })
+    age!: number;
   }
 
 ```
@@ -72,10 +88,10 @@ interface ColumnInfoOptions {
 ```typescript 
    @Column({ length: 50, unique: true })
    @ColumnInfo({ 
-      id: "8b4e6g1h1a3b5s8t",
+      id: "field_username_001",
       label: "用户名"
    })
-   username: string;
+   username!: string;
 
 ```
 
@@ -90,7 +106,7 @@ interface MediaConfigOptions {
   mediaType: 'image' | 'video' | 'audio' | 'document' | 'file';
   formats: string[];
   maxSize?: number; // MB
-  multiple?: boolean;
+  isMultiple?: boolean;
   storagePath?: string; // 存储相对路径
 }
 ```
@@ -127,7 +143,7 @@ interface EnumConfigOptions {
 **示例**:
 
 #### 用户头像字段
-```typescript
+```
 @Column({ 
   type: "varchar",
   length: 500,
@@ -145,11 +161,11 @@ interface EnumConfigOptions {
     storagePath: "uploads/avatars"
   }
 })
-avatar: string;
+avatar!: string;
 ```
 
 #### 产品图片字段（多文件media）
-```typescript
+```
 @Column({ 
   type: "simple-array", // "json" 也可以，为了减少AI模型的思考，暂强制为 simple-array
   nullable: true
@@ -166,11 +182,11 @@ avatar: string;
     storagePath: "uploads/products"
   }
 })
-productImages: string[];
+productImages!: string[];
 ```
 
 #### 单选枚举字段
-```typescript
+```
 @Column({ 
   type: "enum",
   enum: OrderStatus,
@@ -186,11 +202,11 @@ productImages: string[];
     default: OrderStatus.PENDING_PAYMENT
   }
 })
-status: OrderStatus;
+status!: string;
 ```
 
 #### 多选枚举字段
-```typescript
+```
 @Column({ 
   type: "simple-array", // "json" 也可以，为了减少AI模型的思考，暂强制为 simple-array
   enum: OrderStatus,
@@ -206,16 +222,24 @@ status: OrderStatus;
     default: [OrderStatus.PENDING_PAYMENT]
   }
 })
-statuses: OrderStatus[];
+statuses!: OrderStatus[];
 ```
 
-## 4、 高级枚举
+## 4、 ADB 增强枚举
 
-高级枚举提供了丰富的元数据支持，允许为枚举值和枚举本身添加详细的配置信息。
+ADB 增强枚举使用 `ADBEnum.create()` 方法创建，提供了丰富的元数据支持和类型安全保证。与传统的 TypeScript 枚举相比，ADBEnum 支持动态属性访问、元数据管理和数据库持久化。
 
-### @EnumInfo 装饰器定义
+### ADBEnum 类特性
 
-```typescript
+- **类型安全**：通过类型断言提供完整的 TypeScript 支持
+- **动态属性**：支持通过索引签名访问枚举值
+- **元数据管理**：为每个枚举项提供丰富的配置信息
+- **数据库兼容**：与 TypeORM 完全兼容
+- **实例缓存**：同一配置的枚举会复用实例
+
+### ADBEnum 接口定义
+
+```
   interface EnumInfoOptions {
     id: string;                    // 枚举唯一标识，由设计器自动分配的短UUID
     code: string;                  // 唯一识别码，使用:表示多级
@@ -238,15 +262,24 @@ statuses: OrderStatus[];
 
 ### 使用示例
 
-#### 枚举定义
+### ADBEnum 创建方法
 
-```typescript
+```
+import { ADBEnum } from 'adb-typeorm';
 
-@EnumInfo({
-  id: "3f7a9d2c8b4e6g1h",
-  code: "order:status",
+// 创建 ADB 增强枚举
+export const OrderStatus = ADBEnum.create({
+  id: "enum-order-status-001",
+  code: "order:status", 
   label: "订单状态",
   description: "订单生命周期状态管理",
+  values: {
+    PENDING_PAYMENT: "pending_payment",
+    PAID: "paid",
+    PROCESSING: "processing",
+    COMPLETED: "completed",
+    CANCELLED: "cancelled"
+  },
   items: {
     PENDING_PAYMENT: {
       label: "待支付",
@@ -273,7 +306,7 @@ statuses: OrderStatus[];
     PROCESSING: {
       label: "处理中",
       icon: "loading",
-      color: "#1890ff",
+      color: "#1890ff", 
       description: "订单正在处理中",
       sort: 3,
       metadata: {
@@ -282,20 +315,27 @@ statuses: OrderStatus[];
       }
     }
   }
-})
-enum OrderStatus {
-  PENDING_PAYMENT = "pending_payment",
-  PAID = "paid",
-  PROCESSING = "processing"
-}
+}) as ADBEnum & {
+  readonly PENDING_PAYMENT: string;
+  readonly PAID: string;
+  readonly PROCESSING: string;
+  readonly COMPLETED: string;
+  readonly CANCELLED: string;
+};
+
+// 使用枚举
+console.log(OrderStatus.PENDING_PAYMENT); // "pending_payment"
+console.log(OrderStatus.getItemConfig('PENDING_PAYMENT')); // 获取元数据
+console.log(OrderStatus.getValue('PAID')); // "paid"
+console.log(OrderStatus.getEnabledItems()); // 获取所有启用的枚举项
 ```
 
-#### Column中引用 高级枚举的示例
+#### Column中引用 ADB增强枚举的示例
 
-```typescript
+```
 @Entity("orders")
 @EntityInfo({
-  id: "4f7a9d2c8b4e6g1h",
+  id: "order-entity-001",
   code: "order:business:transaction",
   label: "订单实体",
   description: "订单业务实体",
@@ -303,23 +343,27 @@ enum OrderStatus {
 })
 export class Order {
   @PrimaryGeneratedColumn()
-  id: number;
+  @ColumnInfo({
+    id: "field_order_id_001",
+    label: "订单ID"
+  })
+  id!: number;
 
   @Column({ length: 50 })
   @ColumnInfo({
-    id: "5f7a9d2c8b4e6g1h",
+    id: "field_order_number_001",
     label: "订单号"
   })
-  orderNumber: string;
+  orderNumber!: string;
 
-  // 使用高级枚举的订单状态字段
+  // 使用 ADB 增强枚举的订单状态字段
   @Column({ 
-    type: "enum",
-    enum: OrderStatus,
+    type: "varchar",
+    length: 50,
     default: OrderStatus.PENDING_PAYMENT
   })
   @ColumnInfo({
-    id: "6f7a9d2c8b4e6g1h",
+    id: "field_order_status_001",
     label: "订单状态",
     extendType: "enum",
     enumConfig: {
@@ -328,22 +372,90 @@ export class Order {
       default: OrderStatus.PENDING_PAYMENT
     }
   })
-  status: OrderStatus;
+  status!: string;
 
   @Column({ type: "decimal", precision: 10, scale: 2 })
   @ColumnInfo({
-    id: "7f7a9d2c8b4e6g1h",
+    id: "field_order_amount_001",
     label: "订单金额"
   })
-  amount: number;
+  amount!: number;
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  createdAt: Date;
+  @ColumnInfo({
+    id: "field_created_at_001",
+    label: "创建时间"
+  })
+  createdAt!: Date;
 }
-
-
 ```
 
+## 5、EnumMetadata 实体
 
+ADB-TypeORM 提供了 `EnumMetadata` 实体用于将枚举元数据持久化到数据库中，支持枚举信息的统一管理。
 
+```
+@Entity("__enums__")
+export class EnumMetadata {
+  @PrimaryGeneratedColumn()
+  id!: number;
 
+  @Column({ length: 50, unique: true })
+  enumId!: string;  // 枚举唯一标识
+
+  @Column({ length: 100, unique: true })
+  code!: string;    // 枚举识别码
+
+  @Column({ length: 200 })
+  label!: string;   // 枚举显示名称
+
+  @Column({ type: "text", nullable: true })
+  description?: string; // 枚举描述
+
+  @Column({ type: "json" })
+  items!: Record<string, EnumItemOptions>; // 枚举项配置
+
+  @Column({ length: 100 })
+  enumName!: string; // 枚举名称
+
+  @Column({ type: "json", nullable: true })
+  enumValues?: Record<string, any>; // 枚举值映射
+
+  @Column({ default: true })
+  isActive!: boolean; // 是否激活
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
+}
+```
+
+## 6、重要技术说明
+
+### TypeScript 配置要求
+
+```
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "useDefineForClassFields": false
+  }
+}
+```
+
+### 属性定义规范
+
+- 所有实体属性必须使用 `!` 断言符号（如 `id!: number`）
+- 可选属性使用 `?` 操作符（如 `description?: string`）
+- ADB 增强枚举需要类型断言来确保类型安全
+
+### 版本兼容性
+
+- **TypeScript**: 5.8.3（推荐版本）
+- **TypeORM**: 0.3.25+
+- **reflect-metadata**: 0.2.2+
+- **Node.js**: 14.0.0+
