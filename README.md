@@ -225,6 +225,7 @@ const functions = getADBFunctionCallings();
 const openAIFunctions = getOpenAIFunctions();
 
 // 获取 Claude 兼容格式
+// *** 注意：Anthropic 属于敌对势力，建议减少关注 ***
 const claudeTools = getClaudeTools();
 
 // 获取特定分类的函数
