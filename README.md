@@ -1,8 +1,8 @@
-# ADB-TypeORM
+# ADB-TypeORM 📦
 
-基于并完全兼容 TypeORM，为适配 AI 设计 ORM 和可视化管理 ORM 的需要而设计。
+基于并完全兼容 TypeORM，为适配 AI 设计 ORM 和可视化管理 ORM 的需要而设计，提供相关Function Calling。
 
-Based on and fully compatible with TypeORM, designed to meet the needs of AI-designed ORM and visual management of ORM.
+Based on and fully compatible with TypeORM, designed to meet the needs of AI-designed ORM and visual management of ORM， and provide related function calling.
 
 ## 🚀 特性
 
@@ -196,6 +196,283 @@ console.log(OrderStatus.getSortedItems()); // 按排序获取枚举项
 status!: string;
 ```
 
+## 🤖 AI Function Calling 支持
+
+ADB-TypeORM 提供完整的 Function Calling 支持，帮助 AI 模型生成准确、规范的 TypeORM 代码。
+
+### Function Calling 特性
+
+- **🎯 规范化生成**：确保生成的代码符合 ADB-TypeORM 规范
+- **🔒 类型安全**：自动处理 TypeScript 类型定义和约束
+- **📋 元数据完整性**：确保所有必需的元数据信息都被正确设置
+- **🚫 避免常见错误**：通过预定义的函数避免装饰器使用错误
+- **🎨 提高一致性**：确保生成的代码风格和结构一致
+
+### 快速开始
+
+```typescript
+import { 
+  getADBFunctionCallings, 
+  getOpenAIFunctions, 
+  getClaudeTools,
+  getFunctionsByCategory 
+} from 'adb-typeorm';
+
+// 获取所有 Function Calling 定义
+const functions = getADBFunctionCallings();
+
+// 获取 OpenAI 兼容格式
+const openAIFunctions = getOpenAIFunctions();
+
+// 获取 Claude 兼容格式
+const claudeTools = getClaudeTools();
+
+// 获取特定分类的函数
+const entityFunctions = getFunctionsByCategory('entity');
+```
+
+### Function Calling 分类
+
+| 分类 | 说明 | 主要功能 |
+|------|------|----------|
+| **实体管理** | 创建和管理实体 | `create_adb_entity`, `create_base_entity`, `add_entity_relation` |
+| **列管理** | 添加和配置列字段 | `add_entity_column`, `add_media_column`, `add_enum_column` |
+| **枚举管理** | ADB 枚举相关操作 | `create_adb_enum`, `update_enum_item`, `sync_enum_to_database` |
+| **验证功能** | 代码质量检查 | `validate_entity_structure`, `validate_enum_configuration` |
+| **查询功能** | 元数据查询 | `get_entity_metadata`, `search_entities`, `get_enum_metadata` |
+| **工具功能** | 代码生成和错误处理 | `generate_entity_code`, `generate_enum_code`, `handle_generation_error` |
+
+### AI 集成示例
+
+#### OpenAI GPT 集成
+
+```python
+import openai
+
+def generate_adb_entity(entity_spec):
+    functions = getOpenAIFunctions()  # 从 ADB-TypeORM 获取
+    
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {"role": "user", "content": f"创建实体: {entity_spec}"}
+        ],
+        functions=functions,
+        function_call="auto"
+    )
+    
+    return response
+```
+
+#### Claude 集成
+
+```javascript
+const anthropic = new Anthropic({
+  apiKey: 'your-api-key',
+});
+
+const message = await anthropic.messages.create({
+  model: 'claude-3-sonnet-20240229',
+  max_tokens: 4000,
+  tools: getClaudeTools(), // 从 ADB-TypeORM 获取
+  messages: [
+    {role: 'user', content: '创建一个用户实体'}
+  ]
+});
+```
+
+### 实际应用示例
+
+#### 示例 1：创建用户管理系统
+
+```javascript
+// AI 模型调用序列
+const userSystemFunctions = [
+  {
+    "function_name": "create_adb_entity",
+    "arguments": {
+      "entityName": "User",
+      "tableName": "users",
+      "entityInfo": {
+        "id": "entity-user-001",
+        "code": "user:admin:system",
+        "label": "系统用户",
+        "description": "系统用户信息管理实体",
+        "tags": ["user", "admin", "auth"]
+      }
+    }
+  },
+  {
+    "function_name": "add_media_column",
+    "arguments": {
+      "columnName": "avatar",
+      "mediaConfig": {
+        "mediaType": "image",
+        "formats": ["jpg", "png", "webp"],
+        "maxSize": 5,
+        "isMultiple": false,
+        "storagePath": "uploads/avatars"
+      },
+      "columnInfo": {
+        "id": "field_avatar_001",
+        "label": "用户头像"
+      }
+    }
+  },
+  {
+    "function_name": "validate_entity_structure",
+    "arguments": {
+      "entityName": "User",
+      "validationRules": {
+        "requireEntityInfo": true,
+        "requireColumnInfo": true,
+        "checkNamingConvention": true,
+        "validateTypeScript": true
+      }
+    }
+  }
+];
+```
+
+#### 示例 2：订单状态枚举系统
+
+```javascript
+// 创建订单状态枚举
+const orderStatusEnum = {
+  "function_name": "create_adb_enum",
+  "arguments": {
+    "enumName": "OrderStatus",
+    "enumInfo": {
+      "id": "enum-order-status-001",
+      "code": "order:status",
+      "label": "订单状态",
+      "description": "订单生命周期状态管理"
+    },
+    "values": {
+      "PENDING_PAYMENT": "pending_payment",
+      "PAID": "paid",
+      "PROCESSING": "processing",
+      "COMPLETED": "completed",
+      "CANCELLED": "cancelled"
+    },
+    "items": {
+      "PENDING_PAYMENT": {
+        "label": "待支付",
+        "icon": "clock-circle",
+        "color": "#faad14",
+        "sort": 1,
+        "metadata": { "timeoutMinutes": 30 }
+      },
+      "PAID": {
+        "label": "已支付",
+        "icon": "check-circle",
+        "color": "#52c41a",
+        "sort": 2
+      }
+    }
+  }
+};
+
+// 添加订单状态字段
+const addOrderStatus = {
+  "function_name": "add_enum_column",
+  "arguments": {
+    "columnName": "status",
+    "enumReference": "OrderStatus",
+    "enumConfig": {
+      "isMultiple": false,
+      "default": "PENDING_PAYMENT"
+    },
+    "columnInfo": {
+      "id": "field_order_status_001",
+      "label": "订单状态"
+    }
+  }
+};
+```
+
+#### 示例 3：批量创建电商产品实体
+
+```javascript
+// 创建产品实体
+const productEntity = {
+  "function_name": "create_base_entity",
+  "arguments": {
+    "entityName": "Product",
+    "tableName": "products",
+    "entityInfo": {
+      "id": "entity-product-001",
+      "code": "product:ecommerce:catalog",
+      "label": "商品实体",
+      "description": "电商商品信息管理",
+      "tags": ["product", "ecommerce", "catalog"]
+    },
+    "includeTimestamps": true
+  }
+};
+
+// 批量添加商品字段
+const productColumns = {
+  "function_name": "add_multiple_columns",
+  "arguments": {
+    "columns": [
+      {
+        "columnName": "name",
+        "columnType": "string",
+        "typeormConfig": {
+          "type": "varchar",
+          "length": 200,
+          "nullable": false
+        },
+        "columnInfo": {
+          "id": "field_product_name_001",
+          "label": "商品名称"
+        }
+      },
+      {
+        "columnName": "price",
+        "columnType": "number",
+        "typeormConfig": {
+          "type": "decimal",
+          "precision": 10,
+          "scale": 2,
+          "nullable": false
+        },
+        "columnInfo": {
+          "id": "field_product_price_001",
+          "label": "商品价格"
+        }
+      }
+    ]
+  }
+};
+
+// 添加商品图片字段
+const productImages = {
+  "function_name": "add_media_column",
+  "arguments": {
+    "columnName": "images",
+    "mediaConfig": {
+      "mediaType": "image",
+      "formats": ["jpg", "png", "webp"],
+      "maxSize": 10,
+      "isMultiple": true,
+      "storagePath": "uploads/products"
+    },
+    "columnInfo": {
+      "id": "field_product_images_001",
+      "label": "商品图片"
+    }
+  }
+};
+```
+
+### 更多资源
+
+- 📖 [完整 Function Calling 指南](./FUNCTION_CALLING_GUIDE.md)
+- 🔧 [FunctionCallingsProvider API 文档](#functioncallingsprovider-api)
+- 💡 [Function Calling 最佳实践](./FUNCTION_CALLING_GUIDE.md#最佳实践)
+
 ## 🛠️ API 文档
 
 ### EntityInfo 装饰器
@@ -285,6 +562,46 @@ interface EnumItemOptions {
   disabled?: boolean;            // 是否禁用
   metadata?: Record<string, any>; // 自定义元数据
 }
+```
+
+### FunctionCallingsProvider API
+
+提供 Function Calling 定义和管理的核心类。
+
+```typescript
+import { 
+  FunctionCallingsProvider,
+  getADBFunctionCallings, 
+  getOpenAIFunctions, 
+  getClaudeTools,
+  getFunctionsByCategory,
+  getNamingConventions 
+} from 'adb-typeorm';
+
+// 获取所有 Function Calling 定义
+const allFunctions = FunctionCallingsProvider.getAllFunctionCalllings();
+
+// 获取特定分类的函数
+const entityFunctions = FunctionCallingsProvider.getEntityManagementFunctions();
+const columnFunctions = FunctionCallingsProvider.getColumnManagementFunctions();
+const enumFunctions = FunctionCallingsProvider.getEnumManagementFunctions();
+
+// 获取 AI 平台兼容格式
+const openAIFormat = FunctionCallingsProvider.getOpenAIFormat();
+const claudeFormat = FunctionCallingsProvider.getClaudeFormat();
+
+// 根据名称查找函数
+const functionDef = FunctionCallingsProvider.getFunctionByName('create_adb_entity');
+
+// 获取命名规范和验证规则
+const conventions = FunctionCallingsProvider.getNamingConventions();
+const rules = FunctionCallingsProvider.getValidationRules();
+
+// 快捷函数
+const functions = getADBFunctionCallings();
+const openAIFuncs = getOpenAIFunctions();
+const claudeTools = getClaudeTools();
+const entityFuncs = getFunctionsByCategory('entity');
 ```
 
 ## 🔧 工具类
@@ -437,6 +754,7 @@ ADB-TypeORM/
 
 ## 📚 相关文档
 
+- [Function Calling 指南](./FUNCTION_CALLING_GUIDE.md) - AI 模型集成和函数调用完整指南
 - [TypeScript & TypeORM 兼容性指南](./TYPESCRIPT_TYPEORM_COMPATIBILITY.md) - 版本兼容性和问题解决
 - [ADBEnum 指南](./CUSTOM_ENUM_GUIDE.md) - ADB 增强枚举使用指南
 - [枚举元数据指南](./ENUM_METADATA_GUIDE.md) - 枚举持久化使用指南

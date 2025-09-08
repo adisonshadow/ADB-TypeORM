@@ -9,6 +9,16 @@ export { EnumMetadataService } from './EnumMetadataService';
 // 导出ADB枚举类
 export { ADBEnum } from './ADBEnum';
 
+// 导出Function Calling提供器
+export { 
+  FunctionCallingsProvider,
+  getADBFunctionCallings,
+  getOpenAIFunctions,
+  getClaudeTools,
+  getFunctionsByCategory,
+  getNamingConventions
+} from './FunctionCallingsProvider';
+
 /**
  * 实体信息服务类
  * 提供实体相关的工具函数

@@ -35,4 +35,12 @@ export default {
   EnumMetadataService: require('./utils').EnumMetadataService,
   ADBEnum: require('./utils').ADBEnum,
   Utils: require('./utils').Utils,
+  
+  // Function Calling 支持
+  FunctionCallingsProvider: require('./utils').FunctionCallingsProvider,
+  getADBFunctionCallings: require('./utils').getADBFunctionCallings,
+  getOpenAIFunctions: require('./utils').getOpenAIFunctions,
+  getClaudeTools: require('./utils').getClaudeTools,
+  getFunctionsByCategory: require('./utils').getFunctionsByCategory,
+  getNamingConventions: require('./utils').getNamingConventions,
 };
