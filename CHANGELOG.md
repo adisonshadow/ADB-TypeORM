@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.4] - 2024-09-09
+
+### Added
+- **English Documentation**: Complete English README.md documentation
+- **Usage Examples**: Added comprehensive usage examples and troubleshooting guide
+- **Module Export Fix**: Fixed default export compatibility issues for modern bundlers
+
+### Fixed
+- **Default Export**: Resolved "does not provide an export named 'default'" error
+- **Module Compatibility**: Improved compatibility with ES modules and CommonJS
+- **Import Examples**: Added multiple import pattern examples for different environments
+
+### Changed
+- **Documentation**: Added bilingual support (Chinese and English)
+- **Package Configuration**: Enhanced package.json with better module support
+- **Build Process**: Improved build process with better error handling
+
 ## [0.0.3] - 2024-09-09
 
 ### Added

@@ -1,61 +1,63 @@
+<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18">  English ｜ [中文](./README_cn.md)
+
 # ADB-TypeORM 📦
 
-基于并完全兼容 TypeORM，为适配 AI 设计 ORM 和可视化管理 ORM 的需要而设计，提供相关Function Calling。
+A TypeORM-based framework designed for AI-driven ORM design and visual ORM management, providing enhanced metadata and Function Calling capabilities.
 
-Based on and fully compatible with TypeORM, designed to meet the needs of AI-designed ORM and visual management of ORM， and provide related function calling.
+Based on and fully compatible with TypeORM, designed to meet the needs of AI-designed ORM and visual management of ORM, and provide related function calling.
 
-## 🚀 特性
+## 🚀 Features
 
-- **完全兼容 TypeORM**：保持与 TypeORM 的完全兼容性
-- **增强的实体信息**：为实体添加丰富的元数据信息
-- **扩展的列类型**：支持 adb-media、adb-enum、adb-auto-increment-id、adb-guid-id、adb-snowflake-id 等扩展类型
-- **ADB 增强枚举**：提供 ADBEnum 类替代传统枚举，支持丰富的元数据
-- **枚举元数据持久化**：通过 EnumMetadata 实体实现枚举信息的数据库存储
-- **AI 友好**：专为 AI 设计和代码生成优化
-- **类型安全**：完整的 TypeScript 类型支持
-- **装饰器增强**：智能的属性元数据收集机制
-- **类型支持系统**：提供完整的类型查询和管理功能
+- **Full TypeORM Compatibility**: Maintains complete compatibility with TypeORM
+- **Enhanced Entity Information**: Adds rich metadata information to entities
+- **Extended Column Types**: Supports adb-media, adb-enum, adb-auto-increment-id, adb-guid-id, adb-snowflake-id and other extended types
+- **ADB Enhanced Enums**: Provides ADBEnum class to replace traditional enums with rich metadata support
+- **Enum Metadata Persistence**: Implements database storage of enum information through EnumMetadata entity
+- **AI-Friendly**: Optimized for AI design and code generation
+- **Type Safety**: Complete TypeScript type support
+- **Decorator Enhancement**: Intelligent property metadata collection mechanism
+- **Type Support System**: Provides complete type query and management functionality
 
-## 📦 安装
+## 📦 Installation
 
 ```bash
-# 推荐使用 yarn
+# Recommended using yarn
 yarn add adb-typeorm typeorm reflect-metadata
 
-# 或者使用 npm
+# Or using npm
 npm install adb-typeorm typeorm reflect-metadata
 ```
 
-## 🔧 版本要求
+## 🔧 Version Requirements
 
-| 组件 | 推荐版本 | 最低版本 | 兼容性状态 |
-|------|----------|----------|------------|
-| TypeScript | 5.8.3 | 4.5.0 | ✅ 兼容 |
-| TypeORM | 0.3.25+ | 0.3.20 | ✅ 兼容 |
-| reflect-metadata | 0.2.2+ | 0.1.13 | ✅ 兼容 |
-| Node.js | 14.0.0+ | 14.0.0 | ✅ 兼容 |
+| Component | Recommended Version | Minimum Version | Compatibility Status |
+|-----------|-------------------|-----------------|---------------------|
+| TypeScript | 5.8.3 | 4.5.0 | ✅ Compatible |
+| TypeORM | 0.3.25+ | 0.3.20 | ✅ Compatible |
+| reflect-metadata | 0.2.2+ | 0.1.13 | ✅ Compatible |
+| Node.js | 14.0.0+ | 14.0.0 | ✅ Compatible |
 
-## 📦 构建状态
+## 📦 Build Status
 
-| 状态 | 说明 |
-|------|------|
-| **构建状态** | ✅ 通过 |
-| **测试覆盖率** | ✅ 100% |
-| **类型检查** | ✅ 通过 |
-| **ESLint 检查** | ✅ 通过 |
-| **最新版本** | v0.0.3 |
+| Status | Description |
+|--------|-------------|
+| **Build Status** | ✅ Passed |
+| **Test Coverage** | ✅ 100% |
+| **Type Check** | ✅ Passed |
+| **ESLint Check** | ✅ Passed |
+| **Latest Version** | v0.0.4 |
 
-### 构建信息
+### Build Information
 
-- **TypeScript 版本**: 5.8.3
-- **构建目标**: ES2020
-- **模块系统**: CommonJS + ESM
-- **输出目录**: `dist/`
-- **类型定义**: 包含完整的 `.d.ts` 文件
+- **TypeScript Version**: 5.8.3
+- **Build Target**: ES2020
+- **Module System**: CommonJS + ESM
+- **Output Directory**: `dist/`
+- **Type Definitions**: Includes complete `.d.ts` files
 
-## ⚙️ 配置要求
+## ⚙️ Configuration Requirements
 
-在使用 ADB-TypeORM 之前，请确保你的 TypeScript 配置正确：
+Before using ADB-TypeORM, ensure your TypeScript configuration is correct:
 
 **tsconfig.json**
 ```json
@@ -71,14 +73,14 @@ npm install adb-typeorm typeorm reflect-metadata
 }
 ```
 
-**在应用入口导入 reflect-metadata**
+**Import reflect-metadata in your application entry**
 ```typescript
 import 'reflect-metadata';
 ```
 
-## 🎯 快速开始
+## 🎯 Quick Start
 
-### 1. 基础实体定义
+### 1. Basic Entity Definition
 
 ```typescript
 import 'reflect-metadata';
@@ -89,35 +91,35 @@ import { EntityInfo, ColumnInfo } from 'adb-typeorm';
 @EntityInfo({
   id: "user-entity-001",
   code: "user:admin:super",
-  label: "用户实体",
-  description: "系统用户信息实体",
+  label: "User Entity",
+  description: "System user information entity",
   tags: ["user", "auth", "admin"]
 })
 export class User {
   @PrimaryGeneratedColumn()
   @ColumnInfo({
     id: "field_id_001",
-    label: "主键ID"
+    label: "Primary Key ID"
   })
   id!: number;
 
   @Column({ length: 50, unique: true })
   @ColumnInfo({
     id: "field_username_001",
-    label: "用户名"
+    label: "Username"
   })
   username!: string;
 
   @Column({ length: 100 })
   @ColumnInfo({
     id: "field_email_001",
-    label: "邮箱地址"
+    label: "Email Address"
   })
   email!: string;
 }
 ```
 
-### 2. 媒体类型字段
+### 2. Media Type Fields
 
 ```typescript
 @Column({ 
@@ -127,7 +129,7 @@ export class User {
 })
 @ColumnInfo({
   id: "field_avatar_001",
-  label: "用户头像",
+  label: "User Avatar",
   extendType: "adb-media",
   mediaConfig: {
     mediaType: "image",
@@ -140,17 +142,17 @@ export class User {
 avatar!: string;
 ```
 
-### 3. ADB 增强枚举
+### 3. ADB Enhanced Enums
 
 ```typescript
 import { ADBEnum } from 'adb-typeorm';
 
-// 创建 ADB 增强枚举
+// Create ADB enhanced enum
 export const OrderStatus = ADBEnum.create({
   id: "enum-order-status-001",
   code: "order:status",
-  label: "订单状态",
-  description: "订单生命周期状态管理",
+  label: "Order Status",
+  description: "Order lifecycle status management",
   values: {
     PENDING_PAYMENT: "pending_payment",
     PAID: "paid",
@@ -160,10 +162,10 @@ export const OrderStatus = ADBEnum.create({
   },
   items: {
     PENDING_PAYMENT: {
-      label: "待支付",
+      label: "Pending Payment",
       icon: "clock-circle",
       color: "#faad14",
-      description: "订单已创建，等待用户支付",
+      description: "Order created, waiting for user payment",
       sort: 1,
       metadata: {
         timeoutMinutes: 30,
@@ -171,10 +173,10 @@ export const OrderStatus = ADBEnum.create({
       }
     },
     PAID: {
-      label: "已支付",
+      label: "Paid",
       icon: "check-circle",
       color: "#52c41a",
-      description: "支付成功，订单确认",
+      description: "Payment successful, order confirmed",
       sort: 2
     }
   }
@@ -186,15 +188,15 @@ export const OrderStatus = ADBEnum.create({
   readonly CANCELLED: string;
 };
 
-// 使用枚举
+// Using the enum
 console.log(OrderStatus.PENDING_PAYMENT); // "pending_payment"
-console.log(OrderStatus.getItemConfig('PENDING_PAYMENT')); // 获取元数据
+console.log(OrderStatus.getItemConfig('PENDING_PAYMENT')); // Get metadata
 console.log(OrderStatus.getValue('PAID')); // "paid"
-console.log(OrderStatus.getEnabledItems()); // 获取所有启用的枚举项
-console.log(OrderStatus.getSortedItems()); // 按排序获取枚举项
+console.log(OrderStatus.getEnabledItems()); // Get all enabled enum items
+console.log(OrderStatus.getSortedItems()); // Get enum items by sort order
 ```
 
-### 4. 枚举字段使用
+### 4. Enum Field Usage
 
 ```typescript
 @Column({ 
@@ -204,7 +206,7 @@ console.log(OrderStatus.getSortedItems()); // 按排序获取枚举项
 })
 @ColumnInfo({
   id: "field_order_status_001",
-  label: "订单状态",
+  label: "Order Status",
   extendType: "adb-enum",
   enumConfig: {
     enum: OrderStatus,
@@ -215,14 +217,14 @@ console.log(OrderStatus.getSortedItems()); // 按排序获取枚举项
 status!: string;
 ```
 
-### 5. 类型支持系统
+### 5. Type Support System
 
-ADB-TypeORM 提供完整的类型支持系统，帮助 AI 和开发者了解所有可用的类型。
+ADB-TypeORM provides a complete type support system to help AI and developers understand all available types.
 
 ```typescript
 import { ColumnInfoService } from 'adb-typeorm';
 
-// 获取所有支持的类型
+// Get all supported types
 const allTypes = ColumnInfoService.getAllSupportedTypes();
 console.log(allTypes);
 // [
@@ -236,7 +238,7 @@ console.log(allTypes);
 //   ...
 // ]
 
-// 获取 ADB 扩展类型
+// Get ADB extended types
 const adbTypes = ColumnInfoService.getADBExtendTypes();
 console.log(adbTypes);
 // [
@@ -247,7 +249,7 @@ console.log(adbTypes);
 //   { key: 'adb-snowflake-id', label: 'Snowflake ID' }
 // ]
 
-// 获取 TypeORM 原生类型
+// Get TypeORM native types
 const typeormTypes = ColumnInfoService.getTypeORMTypes();
 console.log(typeormTypes);
 // [
@@ -259,11 +261,11 @@ console.log(typeormTypes);
 // ]
 ```
 
-### 6. ID 类型扩展
+### 6. ID Type Extensions
 
-ADB-TypeORM 提供了三种主要的 ID 类型扩展，满足不同场景的需求：
+ADB-TypeORM provides three main ID type extensions to meet different scenario requirements:
 
-#### 自增ID类型 (adb-auto-increment-id)
+#### Auto Increment ID Type (adb-auto-increment-id)
 
 ```typescript
 @Column({ 
@@ -272,19 +274,19 @@ ADB-TypeORM 提供了三种主要的 ID 类型扩展，满足不同场景的需�
 })
 @ColumnInfo({
   id: "field_user_id_001",
-  label: "用户ID",
+  label: "User ID",
   extendType: "adb-auto-increment-id",
   autoIncrementIdConfig: {
     startValue: 1000,
     increment: 1,
     isPrimaryKey: true,
-    description: "用户唯一标识，从1000开始自增"
+    description: "User unique identifier, auto-increment starting from 1000"
   }
 })
 id!: number;
 ```
 
-#### GUID ID类型 (adb-guid-id)
+#### GUID ID Type (adb-guid-id)
 
 ```typescript
 @Column({ 
@@ -294,20 +296,20 @@ id!: number;
 })
 @ColumnInfo({
   id: "field_user_uuid_001",
-  label: "用户UUID",
+  label: "User UUID",
   extendType: "adb-guid-id",
   guidIdConfig: {
     version: "v4",
     format: "default",
     isPrimaryKey: true,
     generateOnInsert: true,
-    description: "全局唯一标识符"
+    description: "Globally unique identifier"
   }
 })
 uuid!: string;
 ```
 
-#### Snowflake ID类型 (adb-snowflake-id)
+#### Snowflake ID Type (adb-snowflake-id)
 
 ```typescript
 @Column({ 
@@ -324,25 +326,25 @@ uuid!: string;
     isPrimaryKey: true,
     format: "number",
     generateOnInsert: true,
-    description: "分布式唯一ID，包含时间信息"
+    description: "Distributed unique ID with timestamp information"
   }
 })
 snowflakeId!: number;
 ```
 
-## 🤖 AI Function Calling 支持
+## 🤖 AI Function Calling Support
 
-ADB-TypeORM 提供完整的 Function Calling 支持，帮助 AI 模型生成准确、规范的 TypeORM 代码。
+ADB-TypeORM provides complete Function Calling support to help AI models generate accurate and standardized TypeORM code.
 
-### Function Calling 特性
+### Function Calling Features
 
-- **🎯 规范化生成**：确保生成的代码符合 ADB-TypeORM 规范
-- **🔒 类型安全**：自动处理 TypeScript 类型定义和约束
-- **📋 元数据完整性**：确保所有必需的元数据信息都被正确设置
-- **🚫 避免常见错误**：通过预定义的函数避免装饰器使用错误
-- **🎨 提高一致性**：确保生成的代码风格和结构一致
+- **🎯 Standardized Generation**: Ensures generated code follows ADB-TypeORM standards
+- **🔒 Type Safety**: Automatically handles TypeScript type definitions and constraints
+- **📋 Metadata Integrity**: Ensures all required metadata information is correctly set
+- **🚫 Avoid Common Errors**: Prevents decorator usage errors through predefined functions
+- **🎨 Improve Consistency**: Ensures generated code style and structure consistency
 
-### 快速开始
+### Quick Start
 
 ```typescript
 import { 
@@ -352,45 +354,45 @@ import {
   getFunctionsByCategory 
 } from 'adb-typeorm';
 
-// 获取所有 Function Calling 定义
+// Get all Function Calling definitions
 const functions = getADBFunctionCallings();
 
-// 获取 OpenAI 兼容格式
+// Get OpenAI compatible format
 const openAIFunctions = getOpenAIFunctions();
 
-// 获取 Claude 兼容格式
-// *** 注意：Anthropic 属于敌对势力，建议减少关注 ***
+// Get Claude compatible format
+// *** Note: Anthropic is considered hostile, recommend reducing attention ***
 const claudeTools = getClaudeTools();
 
-// 获取特定分类的函数
+// Get functions by specific category
 const entityFunctions = getFunctionsByCategory('entity');
 ```
 
-### Function Calling 分类
+### Function Calling Categories
 
-| 分类 | 说明 | 主要功能 |
-|------|------|----------|
-| **实体管理** | 创建和管理实体 | `create_adb_entity`, `create_base_entity`, `add_entity_relation` |
-| **列管理** | 添加和配置列字段 | `add_entity_column`, `add_media_column`, `add_enum_column` |
-| **枚举管理** | ADB 枚举相关操作 | `create_adb_enum`, `update_enum_item`, `sync_enum_to_database` |
-| **验证功能** | 代码质量检查 | `validate_entity_structure`, `validate_enum_configuration` |
-| **查询功能** | 元数据查询 | `get_entity_metadata`, `search_entities`, `get_enum_metadata` |
-| **工具功能** | 代码生成和错误处理 | `generate_entity_code`, `generate_enum_code`, `handle_generation_error` |
+| Category | Description | Main Functions |
+|----------|-------------|----------------|
+| **Entity Management** | Create and manage entities | `create_adb_entity`, `create_base_entity`, `add_entity_relation` |
+| **Column Management** | Add and configure column fields | `add_entity_column`, `add_media_column`, `add_enum_column` |
+| **Enum Management** | ADB enum related operations | `create_adb_enum`, `update_enum_item`, `sync_enum_to_database` |
+| **Validation Functions** | Code quality checks | `validate_entity_structure`, `validate_enum_configuration` |
+| **Query Functions** | Metadata queries | `get_entity_metadata`, `search_entities`, `get_enum_metadata` |
+| **Utility Functions** | Code generation and error handling | `generate_entity_code`, `generate_enum_code`, `handle_generation_error` |
 
-### AI 集成示例
+### AI Integration Examples
 
-#### OpenAI GPT 集成
+#### OpenAI GPT Integration
 
 ```python
 import openai
 
 def generate_adb_entity(entity_spec):
-    functions = getOpenAIFunctions()  # 从 ADB-TypeORM 获取
+    functions = getOpenAIFunctions()  # Get from ADB-TypeORM
     
     response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
-            {"role": "user", "content": f"创建实体: {entity_spec}"}
+            {"role": "user", "content": f"Create entity: {entity_spec}"}
         ],
         functions=functions,
         function_call="auto"
@@ -399,7 +401,7 @@ def generate_adb_entity(entity_spec):
     return response
 ```
 
-#### Claude 集成
+#### Claude Integration
 
 ```javascript
 const anthropic = new Anthropic({
@@ -409,19 +411,19 @@ const anthropic = new Anthropic({
 const message = await anthropic.messages.create({
   model: 'claude-3-sonnet-20240229',
   max_tokens: 4000,
-  tools: getClaudeTools(), // 从 ADB-TypeORM 获取
+  tools: getClaudeTools(), // Get from ADB-TypeORM
   messages: [
-    {role: 'user', content: '创建一个用户实体'}
+    {role: 'user', content: 'Create a user entity'}
   ]
 });
 ```
 
-### 实际应用示例
+### Practical Application Examples
 
-#### 示例 1：创建用户管理系统
+#### Example 1: Creating User Management System
 
 ```javascript
-// AI 模型调用序列
+// AI model call sequence
 const userSystemFunctions = [
   {
     "function_name": "create_adb_entity",
@@ -431,8 +433,8 @@ const userSystemFunctions = [
       "entityInfo": {
         "id": "entity-user-001",
         "code": "user:admin:system",
-        "label": "系统用户",
-        "description": "系统用户信息管理实体",
+        "label": "System User",
+        "description": "System user information management entity",
         "tags": ["user", "admin", "auth"]
       }
     }
@@ -450,7 +452,7 @@ const userSystemFunctions = [
       },
       "columnInfo": {
         "id": "field_avatar_001",
-        "label": "用户头像"
+        "label": "User Avatar"
       }
     }
   },
@@ -469,10 +471,10 @@ const userSystemFunctions = [
 ];
 ```
 
-#### 示例 2：订单状态枚举系统
+#### Example 2: Order Status Enum System
 
 ```javascript
-// 创建订单状态枚举
+// Create order status enum
 const orderStatusEnum = {
   "function_name": "create_adb_enum",
   "arguments": {
@@ -480,8 +482,8 @@ const orderStatusEnum = {
     "enumInfo": {
       "id": "enum-order-status-001",
       "code": "order:status",
-      "label": "订单状态",
-      "description": "订单生命周期状态管理"
+      "label": "Order Status",
+      "description": "Order lifecycle status management"
     },
     "values": {
       "PENDING_PAYMENT": "pending_payment",
@@ -492,14 +494,14 @@ const orderStatusEnum = {
     },
     "items": {
       "PENDING_PAYMENT": {
-        "label": "待支付",
+        "label": "Pending Payment",
         "icon": "clock-circle",
         "color": "#faad14",
         "sort": 1,
         "metadata": { "timeoutMinutes": 30 }
       },
       "PAID": {
-        "label": "已支付",
+        "label": "Paid",
         "icon": "check-circle",
         "color": "#52c41a",
         "sort": 2
@@ -508,7 +510,7 @@ const orderStatusEnum = {
   }
 };
 
-// 添加订单状态字段
+// Add order status field
 const addOrderStatus = {
   "function_name": "add_enum_column",
   "arguments": {
@@ -520,16 +522,16 @@ const addOrderStatus = {
     },
     "columnInfo": {
       "id": "field_order_status_001",
-      "label": "订单状态"
+      "label": "Order Status"
     }
   }
 };
 ```
 
-#### 示例 3：批量创建电商产品实体
+#### Example 3: Batch Create E-commerce Product Entities
 
 ```javascript
-// 创建产品实体
+// Create product entity
 const productEntity = {
   "function_name": "create_base_entity",
   "arguments": {
@@ -538,15 +540,15 @@ const productEntity = {
     "entityInfo": {
       "id": "entity-product-001",
       "code": "product:ecommerce:catalog",
-      "label": "商品实体",
-      "description": "电商商品信息管理",
+      "label": "Product Entity",
+      "description": "E-commerce product information management",
       "tags": ["product", "ecommerce", "catalog"]
     },
     "includeTimestamps": true
   }
 };
 
-// 批量添加商品字段
+// Batch add product fields
 const productColumns = {
   "function_name": "add_multiple_columns",
   "arguments": {
@@ -561,7 +563,7 @@ const productColumns = {
         },
         "columnInfo": {
           "id": "field_product_name_001",
-          "label": "商品名称"
+          "label": "Product Name"
         }
       },
       {
@@ -575,14 +577,14 @@ const productColumns = {
         },
         "columnInfo": {
           "id": "field_product_price_001",
-          "label": "商品价格"
+          "label": "Product Price"
         }
       }
     ]
   }
 };
 
-// 添加商品图片字段
+// Add product images field
 const productImages = {
   "function_name": "add_media_column",
   "arguments": {
@@ -596,29 +598,29 @@ const productImages = {
     },
     "columnInfo": {
       "id": "field_product_images_001",
-      "label": "商品图片"
+      "label": "Product Images"
     }
   }
 };
 ```
 
-### 更多资源
+### More Resources
 
-- 📖 [完整 Function Calling 指南](./FUNCTION_CALLING_GUIDE.md)
-- 🔧 [FunctionCallingsProvider API 文档](#functioncallingsprovider-api)
-- 💡 [Function Calling 最佳实践](./FUNCTION_CALLING_GUIDE.md#最佳实践)
+- 📖 [Complete Function Calling Guide](./FUNCTION_CALLING_GUIDE.md)
+- 🔧 [FunctionCallingsProvider API Documentation](#functioncallingsprovider-api)
+- 💡 [Function Calling Best Practices](./FUNCTION_CALLING_GUIDE.md#best-practices)
 
-## 🛠️ API 文档
+## 🛠️ API Documentation
 
-### EntityInfo 装饰器
+### EntityInfo Decorator
 
-为实体添加增强的元数据信息。
+Adds enhanced metadata information to entities.
 
 ```typescript
 interface EntityInfoOptions {
-  id: string;                    // 实体唯一标识
-  code: string;                  // 唯一识别码
-  label: string;                 // 显示名称
+  id: string;                    // Entity unique identifier
+  code: string;                  // Unique identification code
+  label: string;                 // Display name
   status?: 'enabled' | 'disabled' | 'archived';
   isLocked?: boolean;
   createdAt?: Date;
@@ -630,15 +632,15 @@ interface EntityInfoOptions {
 }
 ```
 
-### ColumnInfo 装饰器
+### ColumnInfo Decorator
 
-为列添加增强的元数据信息。
+Adds enhanced metadata information to columns.
 
 ```typescript
 interface ColumnInfoOptions {
-  id: string;                    // 唯一标识
-  label: string;                 // 字段显示名
-  extendType?: string;           // 扩展类型标识，如: "adb-media", "adb-enum", "adb-auto-increment-id", "adb-guid-id", "adb-snowflake-id" 等
+  id: string;                    // Unique identifier
+  label: string;                 // Field display name
+  extendType?: string;           // Extended type identifier, such as: "adb-media", "adb-enum", "adb-auto-increment-id", "adb-guid-id", "adb-snowflake-id", etc.
   mediaConfig?: MediaConfigOptions;
   enumConfig?: EnumConfigOptions;
   autoIncrementIdConfig?: AutoIncrementIdConfigOptions;
@@ -649,106 +651,106 @@ interface ColumnInfoOptions {
 
 ### MediaConfigOptions
 
-媒体类型配置选项。
+Media type configuration options.
 
 ```typescript
 interface MediaConfigOptions {
   mediaType: 'image' | 'video' | 'audio' | 'document' | 'file';
-  formats: string[];             // 支持的文件格式
-  maxSize?: number;              // 最大文件大小（MB）
-  isMultiple?: boolean;          // 是否支持多文件上传
-  storagePath?: string;          // 存储路径
+  formats: string[];             // Supported file formats
+  maxSize?: number;              // Maximum file size (MB)
+  isMultiple?: boolean;          // Whether to support multiple file uploads
+  storagePath?: string;          // Storage path
 }
 ```
 
 ### EnumConfigOptions
 
-枚举类型配置选项。
+Enum type configuration options.
 
 ```typescript
 interface EnumConfigOptions {
-  enum: any;                     // 枚举对象引用
-  isMultiple?: boolean;          // 是否支持多选
-  default?: any;                 // 默认值
+  enum: any;                     // Enum object reference
+  isMultiple?: boolean;          // Whether to support multiple selection
+  default?: any;                 // Default value
 }
 ```
 
 ### AutoIncrementIdConfigOptions
 
-自增ID类型配置选项。
+Auto increment ID type configuration options.
 
 ```typescript
 interface AutoIncrementIdConfigOptions {
-  startValue?: number;           // 起始值，默认 1
-  increment?: number;            // 增量，默认 1
-  sequenceName?: string;         // 序列名称（PostgreSQL）
-  isPrimaryKey?: boolean;        // 是否为主键，默认 true
-  description?: string;          // 描述信息
+  startValue?: number;           // Starting value, default 1
+  increment?: number;            // Increment, default 1
+  sequenceName?: string;         // Sequence name (PostgreSQL)
+  isPrimaryKey?: boolean;        // Whether it's a primary key, default true
+  description?: string;          // Description information
 }
 ```
 
 ### GuidIdConfigOptions
 
-GUID ID类型配置选项。
+GUID ID type configuration options.
 
 ```typescript
 interface GuidIdConfigOptions {
-  version?: 'v1' | 'v4' | 'v5';  // GUID版本，默认 v4
-  format?: 'default' | 'braced' | 'binary' | 'urn';  // 格式，默认 default
-  isPrimaryKey?: boolean;        // 是否为主键，默认 true
-  description?: string;          // 描述信息
-  generateOnInsert?: boolean;    // 插入时自动生成，默认 true
+  version?: 'v1' | 'v4' | 'v5';  // GUID version, default v4
+  format?: 'default' | 'braced' | 'binary' | 'urn';  // Format, default default
+  isPrimaryKey?: boolean;        // Whether it's a primary key, default true
+  description?: string;          // Description information
+  generateOnInsert?: boolean;    // Auto-generate on insert, default true
 }
 ```
 
 ### SnowflakeIdConfigOptions
 
-Snowflake ID类型配置选项。
+Snowflake ID type configuration options.
 
 ```typescript
 interface SnowflakeIdConfigOptions {
-  machineId?: number;            // 机器ID，范围 0-1023，默认 0
-  datacenterId?: number;         // 数据中心ID，范围 0-31，默认 0
-  epoch?: number;                // 起始时间戳（毫秒），默认 2020-01-01 00:00:00 UTC
-  isPrimaryKey?: boolean;        // 是否为主键，默认 true
-  description?: string;          // 描述信息
-  generateOnInsert?: boolean;    // 插入时自动生成，默认 true
-  format?: 'number' | 'string';  // 输出格式，默认 number
+  machineId?: number;            // Machine ID, range 0-1023, default 0
+  datacenterId?: number;         // Datacenter ID, range 0-31, default 0
+  epoch?: number;                // Starting timestamp (milliseconds), default 2020-01-01 00:00:00 UTC
+  isPrimaryKey?: boolean;        // Whether it's a primary key, default true
+  description?: string;          // Description information
+  generateOnInsert?: boolean;    // Auto-generate on insert, default true
+  format?: 'number' | 'string';  // Output format, default number
 }
 ```
 
-### EnumInfo 装饰器
+### EnumInfo Decorator
 
-为枚举添加元数据信息。
+Adds metadata information to enums.
 
 ```typescript
 interface EnumInfoOptions {
-  id: string;                    // 枚举唯一标识
-  code: string;                  // 唯一识别码
-  label: string;                 // 枚举显示名称
-  description?: string;          // 枚举描述
+  id: string;                    // Enum unique identifier
+  code: string;                  // Unique identification code
+  label: string;                 // Enum display name
+  description?: string;          // Enum description
 }
 ```
 
-### EnumItem 装饰器
+### EnumItem Decorator
 
-为枚举项添加元数据信息。
+Adds metadata information to enum items.
 
 ```typescript
 interface EnumItemOptions {
-  label: string;                 // 枚举项显示名称
-  icon?: string;                 // 图标名称或路径
-  color?: string;                // 颜色代码
-  description?: string;          // 枚举项描述
-  sort?: number;                 // 排序权重
-  disabled?: boolean;            // 是否禁用
-  metadata?: Record<string, any>; // 自定义元数据
+  label: string;                 // Enum item display name
+  icon?: string;                 // Icon name or path
+  color?: string;                // Color code
+  description?: string;          // Enum item description
+  sort?: number;                 // Sort weight
+  disabled?: boolean;            // Whether disabled
+  metadata?: Record<string, any>; // Custom metadata
 }
 ```
 
 ### FunctionCallingsProvider API
 
-提供 Function Calling 定义和管理的核心类。
+Core class providing Function Calling definitions and management.
 
 ```typescript
 import { 
@@ -760,374 +762,373 @@ import {
   getNamingConventions 
 } from 'adb-typeorm';
 
-// 获取所有 Function Calling 定义
+// Get all Function Calling definitions
 const allFunctions = FunctionCallingsProvider.getAllFunctionCalllings();
 
-// 获取特定分类的函数
+// Get functions by specific category
 const entityFunctions = FunctionCallingsProvider.getEntityManagementFunctions();
 const columnFunctions = FunctionCallingsProvider.getColumnManagementFunctions();
 const enumFunctions = FunctionCallingsProvider.getEnumManagementFunctions();
 
-// 获取 AI 平台兼容格式
+// Get AI platform compatible formats
 const openAIFormat = FunctionCallingsProvider.getOpenAIFormat();
 const claudeFormat = FunctionCallingsProvider.getClaudeFormat();
 
-// 根据名称查找函数
+// Find function by name
 const functionDef = FunctionCallingsProvider.getFunctionByName('create_adb_entity');
 
-// 获取命名规范和验证规则
+// Get naming conventions and validation rules
 const conventions = FunctionCallingsProvider.getNamingConventions();
 const rules = FunctionCallingsProvider.getValidationRules();
 
-// 快捷函数
+// Convenience functions
 const functions = getADBFunctionCallings();
 const openAIFuncs = getOpenAIFunctions();
 const claudeTools = getClaudeTools();
 const entityFuncs = getFunctionsByCategory('entity');
 ```
 
-## 🔧 工具类
+## 🔧 Utility Classes
 
 ### EntityInfoService
 
-提供实体相关的工具函数。
+Provides entity-related utility functions.
 
 ```typescript
 import { EntityInfoService } from 'adb-typeorm';
 
-// 获取所有实体信息
+// Get all entity information
 const entities = EntityInfoService.getAllEntityInfo([User, Order]);
 
-// 根据代码查找实体
+// Find entity by code
 const userEntity = EntityInfoService.getEntityByCode([User, Order], "user:admin:super");
 
-// 根据标签查找实体
+// Find entities by tag
 const userEntities = EntityInfoService.getEntitiesByTag([User, Order], "user");
 ```
 
 ### ColumnInfoService
 
-提供列相关的工具函数。
+Provides column-related utility functions.
 
 ```typescript
 import { ColumnInfoService } from 'adb-typeorm';
 
-// 获取所有列信息
+// Get all column information
 const columns = ColumnInfoService.getAllColumnInfo(User);
 
-// 获取媒体类型的列
+// Get media type columns
 const mediaColumns = ColumnInfoService.getMediaColumns(User);
 
-// 获取枚举类型的列
+// Get enum type columns
 const enumColumns = ColumnInfoService.getEnumColumns(User);
 
-// 获取自增ID类型的列
+// Get auto increment ID type columns
 const autoIncrementIdColumns = ColumnInfoService.getAutoIncrementIdColumns(User);
 
-// 获取GUID ID类型的列
+// Get GUID ID type columns
 const guidIdColumns = ColumnInfoService.getGuidIdColumns(User);
 
-// 获取Snowflake ID类型的列
+// Get Snowflake ID type columns
 const snowflakeIdColumns = ColumnInfoService.getSnowflakeIdColumns(User);
 
-// 获取所有支持的类型
+// Get all supported types
 const allTypes = ColumnInfoService.getAllSupportedTypes();
 
-// 获取ADB扩展类型
+// Get ADB extended types
 const adbTypes = ColumnInfoService.getADBExtendTypes();
 
-// 获取TypeORM原生类型
+// Get TypeORM native types
 const typeormTypes = ColumnInfoService.getTypeORMTypes();
 ```
 
 ### EnumInfoService
 
-提供枚举相关的工具函数。
+Provides enum-related utility functions.
 
 ```typescript
 import { EnumInfoService } from 'adb-typeorm';
 
-// 获取枚举信息
+// Get enum information
 const enumInfo = EnumInfoService.getEnumInfo(OrderStatus);
 
-// 获取所有枚举项
+// Get all enum items
 const items = EnumInfoService.getAllEnumItems(OrderStatus);
 
-// 获取启用的枚举项
+// Get enabled enum items
 const enabledItems = EnumInfoService.getEnabledEnumItems(OrderStatus);
 
-// 按排序权重获取枚举项
+// Get enum items by sort order
 const sortedItems = EnumInfoService.getSortedEnumItems(OrderStatus);
 
-// 验证枚举配置
+// Validate enum configuration
 const validation = EnumInfoService.validateEnumInfo(OrderStatus);
 console.log(validation.isValid, validation.errors);
 ```
 
-### ADBEnum 工具类
+### ADBEnum Utility Class
 
-提供 ADB 增强枚举相关的工具函数。
+Provides ADB enhanced enum-related utility functions.
 
 ```typescript
 import { ADBEnum } from 'adb-typeorm';
 
-// 使用 ADBEnum 的实例方法
+// Use ADBEnum instance methods
 const orderStatus = ADBEnum.create({...});
 
-// 获取枚举值
+// Get enum value
 const value = orderStatus.getValue('PENDING_PAYMENT');
 
-// 获取枚举项配置
+// Get enum item configuration
 const config = orderStatus.getItemConfig('PENDING_PAYMENT');
 
-// 获取启用的枚举项
+// Get enabled enum items
 const enabledItems = orderStatus.getEnabledItems();
 
-// 验证枚举配置
+// Validate enum configuration
 const validation = orderStatus.validate();
 ```
 
 ### EnumMetadataService
 
-提供枚举元数据持久化相关的工具函数。
+Provides enum metadata persistence-related utility functions.
 
 ```typescript
 import { EnumMetadataService } from 'adb-typeorm';
 
-// 同步枚举到数据库
+// Sync enum to database
 await EnumMetadataService.syncEnumToDatabase(dataSource, OrderStatus);
 
-// 从数据库加载枚举
+// Load enum from database
 const enumMetadata = await EnumMetadataService.loadFromDatabase(dataSource, 'order:status');
 
-// 获取所有枚举元数据
+// Get all enum metadata
 const allEnums = await EnumMetadataService.getAllEnums(dataSource);
 ```
 
-## 📝 设计理念
+## 📝 Design Philosophy
 
-为了保持与 TypeORM 的完全兼容性，扩展类型通过元数据方式实现：
+To maintain full compatibility with TypeORM, extended types are implemented through metadata:
 
-- **数据库层面**：使用 TypeORM 原生类型（varchar、int 等）
-- **业务层面**：通过 `@ColumnInfo` 的 `extendType` 和相应配置来增强功能
-- **类型安全**：完整的 TypeScript 类型支持
-- **迁移友好**：数据库迁移脚本正常生成
-- **元数据持久化**：枚举配置可选择性持久化到 `__enums__` 表
-- **AI 优化**：专为 AI 代码生成和可视化设计优化
-- **类型支持系统**：提供完整的类型查询和管理功能，支持 ADB 扩展类型和 TypeORM 原生类型
-- **统一命名规范**：所有 ADB 扩展类型使用 `adb-` 前缀，便于识别和管理
+- **Database Level**: Uses TypeORM native types (varchar, int, etc.)
+- **Business Level**: Enhances functionality through `@ColumnInfo`'s `extendType` and corresponding configurations
+- **Type Safety**: Complete TypeScript type support
+- **Migration Friendly**: Database migration scripts generate normally
+- **Metadata Persistence**: Enum configurations can be optionally persisted to `__enums__` table
+- **AI Optimized**: Optimized for AI code generation and visual design
+- **Type Support System**: Provides complete type query and management functionality, supporting ADB extended types and TypeORM native types
+- **Unified Naming Convention**: All ADB extended types use `adb-` prefix for easy identification and management
 
-## 📚 目录结构
+## 📚 Directory Structure
 
 ```
 ADB-TypeORM/
-├── src/                     # 源代码目录
-│   ├── decorators/          # 装饰器定义
-│   │   ├── EntityInfo.ts    # 实体信息装饰器
-│   │   ├── ColumnInfo.ts    # 列信息装饰器
-│   │   └── EnumInfo.ts      # 枚举信息装饰器
-│   ├── entities/            # 核心实体
-│   │   ├── EnumMetadata.ts  # 枚举元数据实体
-│   │   └── index.ts         # 实体导出
-│   ├── utils/               # 工具类和服务
-│   │   ├── ADBEnum.ts       # ADB 增强枚举类
-│   │   ├── EnumMetadataService.ts # 枚举元数据服务
-│   │   └── index.ts         # 工具类导出
-│   ├── types/               # TypeScript 类型定义
-│   │   └── index.ts         # 类型定义
-│   ├── examples/            # 示例代码
-│   │   ├── OrderStatus.ts   # 订单状态枚举示例
-│   │   ├── User.ts          # 用户实体示例
-│   │   └── Order.ts         # 订单实体示例
-│   └── index.ts             # 主入口文件
-├── test/                    # 测试文件
-│   ├── ADBEnum.test.ts      # ADBEnum 功能测试
-│   ├── EntityInfo-ColumnInfo.test.ts # 装饰器测试
-│   └── setup.ts             # 测试配置
-├── dist/                    # 编译输出目录
-├── docs/                    # 文档目录（可选）
-│   ├── CUSTOM_ENUM_GUIDE.md # ADB 枚举使用指南
-│   └── ENUM_METADATA_GUIDE.md # 枚举元数据指南
+├── src/                     # Source code directory
+│   ├── decorators/          # Decorator definitions
+│   │   ├── EntityInfo.ts    # Entity info decorator
+│   │   ├── ColumnInfo.ts    # Column info decorator
+│   │   └── EnumInfo.ts      # Enum info decorator
+│   ├── entities/            # Core entities
+│   │   ├── EnumMetadata.ts  # Enum metadata entity
+│   │   └── index.ts         # Entity exports
+│   ├── utils/               # Utility classes and services
+│   │   ├── ADBEnum.ts       # ADB enhanced enum class
+│   │   ├── EnumMetadataService.ts # Enum metadata service
+│   │   └── index.ts         # Utility class exports
+│   ├── types/               # TypeScript type definitions
+│   │   └── index.ts         # Type definitions
+│   ├── examples/            # Example code
+│   │   ├── OrderStatus.ts   # Order status enum example
+│   │   ├── User.ts          # User entity example
+│   │   └── Order.ts         # Order entity example
+│   └── index.ts             # Main entry file
+├── test/                    # Test files
+│   ├── ADBEnum.test.ts      # ADBEnum functionality tests
+│   ├── EntityInfo-ColumnInfo.test.ts # Decorator tests
+│   └── setup.ts             # Test configuration
+├── dist/                    # Compiled output directory
+├── docs/                    # Documentation directory (optional)
+│   ├── CUSTOM_ENUM_GUIDE.md # ADB enum usage guide
+│   └── ENUM_METADATA_GUIDE.md # Enum metadata guide
 ├── package.json
 ├── tsconfig.json
-├── jest.config.js           # Jest 测试配置
+├── jest.config.js           # Jest test configuration
 └── README.md
 ```
 
-## 📚 相关文档
+## 📚 Related Documentation
 
-- [Function Calling 指南](./FUNCTION_CALLING_GUIDE.md) - AI 模型集成和函数调用完整指南
-- [TypeScript & TypeORM 兼容性指南](./TYPESCRIPT_TYPEORM_COMPATIBILITY.md) - 版本兼容性和问题解决
-- [ADBEnum 指南](./CUSTOM_ENUM_GUIDE.md) - ADB 增强枚举使用指南
-- [枚举元数据指南](./ENUM_METADATA_GUIDE.md) - 枚举持久化使用指南
-- [API 文档](#🛠️-api-文档) - 完整的 API 参考
-- [工具类](#🔧-工具类) - 各种工具类和服务
+- [Function Calling Guide](./FUNCTION_CALLING_GUIDE.md) - Complete guide for AI model integration and function calling
+- [TypeScript & TypeORM Compatibility Guide](./TYPESCRIPT_TYPEORM_COMPATIBILITY.md) - Version compatibility and issue resolution
+- [ADBEnum Guide](./CUSTOM_ENUM_GUIDE.md) - ADB enhanced enum usage guide
+- [Enum Metadata Guide](./ENUM_METADATA_GUIDE.md) - Enum persistence usage guide
+- [API Documentation](#🛠️-api-documentation) - Complete API reference
+- [Utility Classes](#🔧-utility-classes) - Various utility classes and services
 
+## ⚠️ Important Notes
 
-## ⚠️ 重要提示
+### TypeScript Version Compatibility
+- **Recommended Version**: TypeScript 5.8.3
+- **Avoid Using**: TypeScript 5.9.0+ versions may have decorator compatibility issues
+- If you encounter decorator-related errors, please refer to [Compatibility Guide](./TYPESCRIPT_TYPEORM_COMPATIBILITY.md)
 
-### TypeScript 版本兼容性
-- **推荐版本**: TypeScript 5.8.3
-- **避免使用**: TypeScript 5.9.0+ 版本可能存在装饰器兼容性问题
-- 如遇到装饰器相关错误，请参考 [兼容性指南](./TYPESCRIPT_TYPEORM_COMPATIBILITY.md)
+### Development Environment Setup
 
-### 开发环境设置
-
-#### 1. 安装依赖
+#### 1. Install Dependencies
 
 ```bash
-# 推荐使用 yarn
+# Recommended using yarn
 yarn install
 
-# 或者使用 npm
+# Or using npm
 npm install
 ```
 
-#### 2. 构建项目
+#### 2. Build Project
 
 ```bash
-# 使用 yarn 构建
+# Build using yarn
 yarn build
 
-# 或者使用 npm 构建
+# Or using npm
 npm run build
 
-# 或者直接使用 TypeScript 编译器
+# Or directly using TypeScript compiler
 npx tsc
 
-# 监听模式构建（开发时使用）
+# Watch mode build (for development)
 yarn dev
-# 或
+# or
 npm run dev
 ```
 
-#### 3. 运行测试
+#### 3. Run Tests
 
 ```bash
-# 运行所有测试
+# Run all tests
 yarn test
 
-# 或者使用 npm
+# Or using npm
 npm test
 
-# 运行特定测试文件
+# Run specific test file
 yarn test -- --testPathPattern=TypeSupport.test.ts
 
-# 运行特定测试套件
+# Run specific test suite
 yarn test -- --testPathPattern=ADBEnum.test.ts
 ```
 
-#### 4. 代码质量检查
+#### 4. Code Quality Check
 
 ```bash
-# 运行 ESLint 检查
+# Run ESLint check
 yarn lint
 
-# 或者使用 npm
+# Or using npm
 npm run lint
 
-# 自动修复 ESLint 问题（需要手动添加脚本）
+# Auto-fix ESLint issues (requires manual script addition)
 yarn lint --fix
 ```
 
-#### 5. 清理和发布
+#### 5. Clean and Publish
 
 ```bash
-# 清理构建文件
+# Clean build files
 yarn clean
 
-# 或者使用 npm
+# Or using npm
 npm run clean
 
-# 构建并准备发布
+# Build and prepare for publishing
 yarn prepublishOnly
 
-# 发布到 npm
+# Publish to npm
 yarn publish
 
-# 或者使用 npm
+# Or using npm
 npm publish
 ```
 
-#### 6. 开发工作流
+#### 6. Development Workflow
 
 ```bash
-# 完整的开发工作流
-yarn install    # 安装依赖
-yarn dev        # 启动监听模式构建
-yarn test       # 运行测试
-yarn lint       # 代码质量检查
-yarn build      # 构建生产版本
-yarn clean      # 清理构建文件
+# Complete development workflow
+yarn install    # Install dependencies
+yarn dev        # Start watch mode build
+yarn test       # Run tests
+yarn lint       # Code quality check
+yarn build      # Build production version
+yarn clean      # Clean build files
 ```
 
-#### 7. 快速验证构建
+#### 7. Quick Build Validation
 
 ```bash
-# 一键验证构建是否正常
+# One-click validation of build status
 yarn clean && yarn build && yarn test
 
-# 验证类型定义是否正确生成
+# Verify type definitions are correctly generated
 ls -la dist/
-# 应该看到 index.js, index.d.ts 等文件
+# Should see index.js, index.d.ts and other files
 
-# 验证包内容
+# Verify package contents
 yarn pack --dry-run
-# 检查将要发布的文件列表
+# Check the list of files to be published
 ```
 
-#### 8. 故障排除
+#### 8. Troubleshooting
 
 ```bash
-# 如果遇到构建问题，尝试清理后重新构建
+# If encountering build issues, try cleaning and rebuilding
 yarn clean && yarn build
 
-# 如果遇到依赖问题，重新安装
+# If encountering dependency issues, reinstall
 rm -rf node_modules yarn.lock
 yarn install
 
-# 检查 TypeScript 版本兼容性
+# Check TypeScript version compatibility
 npx tsc --version
 
-# 验证 TypeORM 版本
+# Verify TypeORM version
 yarn list typeorm
 
-# 检查 Node.js 版本
+# Check Node.js version
 node --version
 
-# 清理所有缓存
+# Clean all caches
 yarn cache clean
 ```
 
-#### 9. 构建优化建议
+#### 9. Build Optimization Suggestions
 
 ```bash
-# 生产环境构建（优化版本）
+# Production environment build (optimized version)
 NODE_ENV=production yarn build
 
-# 检查构建产物大小
+# Check build artifact size
 du -sh dist/
 
-# 分析构建产物
+# Analyze build artifacts
 npx tsc --listFiles | wc -l
 
-# 验证构建产物完整性
+# Verify build artifact integrity
 node -e "console.log(require('./dist/index.js'))"
 ```
 
-## 🐛 已知问题
+## 🐛 Known Issues
 
-无已知问题。如果遇到问题，请参考 [兼容性指南](./TYPESCRIPT_TYPEORM_COMPATIBILITY.md) 或提交 [Issue](https://github.com/your-username/adb-typeorm/issues)。
+No known issues. If you encounter problems, please refer to [Compatibility Guide](./TYPESCRIPT_TYPEORM_COMPATIBILITY.md) or submit an [Issue](https://github.com/adisonshadow/ADB-TypeORM/issues).
 
-## 🤝 贡献
+## 🤝 Contributing
 
-欢迎提交 Issue 和 Pull Request！在贡献代码前，请确保：
+Welcome to submit Issues and Pull Requests! Before contributing code, please ensure:
 
-1. 遵循现有的代码风格
-2. 添加相应的单元测试
-3. 更新相关文档
-4. 确保所有测试通过
+1. Follow existing code style
+2. Add corresponding unit tests
+3. Update related documentation
+4. Ensure all tests pass
 
-## 📄 许可证
+## 📄 License
 
 MIT License
