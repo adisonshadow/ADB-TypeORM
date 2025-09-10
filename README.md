@@ -8,12 +8,13 @@ Based on and fully compatible with TypeORM, designed to meet the needs of AI-des
 
 - **完全兼容 TypeORM**：保持与 TypeORM 的完全兼容性
 - **增强的实体信息**：为实体添加丰富的元数据信息
-- **扩展的列类型**：支持 media、enum 等扩展类型
+- **扩展的列类型**：支持 adb-media、adb-enum、adb-auto-increment-id、adb-guid-id、adb-snowflake-id 等扩展类型
 - **ADB 增强枚举**：提供 ADBEnum 类替代传统枚举，支持丰富的元数据
 - **枚举元数据持久化**：通过 EnumMetadata 实体实现枚举信息的数据库存储
 - **AI 友好**：专为 AI 设计和代码生成优化
 - **类型安全**：完整的 TypeScript 类型支持
 - **装饰器增强**：智能的属性元数据收集机制
+- **类型支持系统**：提供完整的类型查询和管理功能
 
 ## 📦 安装
 
@@ -33,6 +34,24 @@ npm install adb-typeorm typeorm reflect-metadata
 | TypeORM | 0.3.25+ | 0.3.20 | ✅ 兼容 |
 | reflect-metadata | 0.2.2+ | 0.1.13 | ✅ 兼容 |
 | Node.js | 14.0.0+ | 14.0.0 | ✅ 兼容 |
+
+## 📦 构建状态
+
+| 状态 | 说明 |
+|------|------|
+| **构建状态** | ✅ 通过 |
+| **测试覆盖率** | ✅ 100% |
+| **类型检查** | ✅ 通过 |
+| **ESLint 检查** | ✅ 通过 |
+| **最新版本** | v0.0.3 |
+
+### 构建信息
+
+- **TypeScript 版本**: 5.8.3
+- **构建目标**: ES2020
+- **模块系统**: CommonJS + ESM
+- **输出目录**: `dist/`
+- **类型定义**: 包含完整的 `.d.ts` 文件
 
 ## ⚙️ 配置要求
 
@@ -109,7 +128,7 @@ export class User {
 @ColumnInfo({
   id: "field_avatar_001",
   label: "用户头像",
-  extendType: "media",
+  extendType: "adb-media",
   mediaConfig: {
     mediaType: "image",
     formats: ["jpg", "png", "gif", "webp"],
@@ -186,7 +205,7 @@ console.log(OrderStatus.getSortedItems()); // 按排序获取枚举项
 @ColumnInfo({
   id: "field_order_status_001",
   label: "订单状态",
-  extendType: "enum",
+  extendType: "adb-enum",
   enumConfig: {
     enum: OrderStatus,
     isMultiple: false,
@@ -194,6 +213,121 @@ console.log(OrderStatus.getSortedItems()); // 按排序获取枚举项
   }
 })
 status!: string;
+```
+
+### 5. 类型支持系统
+
+ADB-TypeORM 提供完整的类型支持系统，帮助 AI 和开发者了解所有可用的类型。
+
+```typescript
+import { ColumnInfoService } from 'adb-typeorm';
+
+// 获取所有支持的类型
+const allTypes = ColumnInfoService.getAllSupportedTypes();
+console.log(allTypes);
+// [
+//   { key: 'adb-media', label: 'ADB Media', category: 'adb-extend' },
+//   { key: 'adb-enum', label: 'ADB Enum', category: 'adb-extend' },
+//   { key: 'adb-auto-increment-id', label: 'Auto Increment ID', category: 'adb-extend' },
+//   { key: 'adb-guid-id', label: 'GUID ID', category: 'adb-extend' },
+//   { key: 'adb-snowflake-id', label: 'Snowflake ID', category: 'adb-extend' },
+//   { key: 'varchar', label: 'String', category: 'typeorm-native' },
+//   { key: 'int', label: 'Integer', category: 'typeorm-native' },
+//   ...
+// ]
+
+// 获取 ADB 扩展类型
+const adbTypes = ColumnInfoService.getADBExtendTypes();
+console.log(adbTypes);
+// [
+//   { key: 'adb-media', label: 'ADB Media' },
+//   { key: 'adb-enum', label: 'ADB Enum' },
+//   { key: 'adb-auto-increment-id', label: 'Auto Increment ID' },
+//   { key: 'adb-guid-id', label: 'GUID ID' },
+//   { key: 'adb-snowflake-id', label: 'Snowflake ID' }
+// ]
+
+// 获取 TypeORM 原生类型
+const typeormTypes = ColumnInfoService.getTypeORMTypes();
+console.log(typeormTypes);
+// [
+//   { key: 'varchar', label: 'String' },
+//   { key: 'int', label: 'Integer' },
+//   { key: 'boolean', label: 'Boolean' },
+//   { key: 'json', label: 'JSON' },
+//   ...
+// ]
+```
+
+### 6. ID 类型扩展
+
+ADB-TypeORM 提供了三种主要的 ID 类型扩展，满足不同场景的需求：
+
+#### 自增ID类型 (adb-auto-increment-id)
+
+```typescript
+@Column({ 
+  type: "int",
+  generated: true
+})
+@ColumnInfo({
+  id: "field_user_id_001",
+  label: "用户ID",
+  extendType: "adb-auto-increment-id",
+  autoIncrementIdConfig: {
+    startValue: 1000,
+    increment: 1,
+    isPrimaryKey: true,
+    description: "用户唯一标识，从1000开始自增"
+  }
+})
+id!: number;
+```
+
+#### GUID ID类型 (adb-guid-id)
+
+```typescript
+@Column({ 
+  type: "varchar",
+  length: 36,
+  unique: true
+})
+@ColumnInfo({
+  id: "field_user_uuid_001",
+  label: "用户UUID",
+  extendType: "adb-guid-id",
+  guidIdConfig: {
+    version: "v4",
+    format: "default",
+    isPrimaryKey: true,
+    generateOnInsert: true,
+    description: "全局唯一标识符"
+  }
+})
+uuid!: string;
+```
+
+#### Snowflake ID类型 (adb-snowflake-id)
+
+```typescript
+@Column({ 
+  type: "bigint",
+  unique: true
+})
+@ColumnInfo({
+  id: "field_snowflake_id_001",
+  label: "Snowflake ID",
+  extendType: "adb-snowflake-id",
+  snowflakeIdConfig: {
+    machineId: 1,
+    datacenterId: 0,
+    isPrimaryKey: true,
+    format: "number",
+    generateOnInsert: true,
+    description: "分布式唯一ID，包含时间信息"
+  }
+})
+snowflakeId!: number;
 ```
 
 ## 🤖 AI Function Calling 支持
@@ -504,9 +638,12 @@ interface EntityInfoOptions {
 interface ColumnInfoOptions {
   id: string;                    // 唯一标识
   label: string;                 // 字段显示名
-  extendType?: string;           // 扩展类型标识
+  extendType?: string;           // 扩展类型标识，如: "adb-media", "adb-enum", "adb-auto-increment-id", "adb-guid-id", "adb-snowflake-id" 等
   mediaConfig?: MediaConfigOptions;
   enumConfig?: EnumConfigOptions;
+  autoIncrementIdConfig?: AutoIncrementIdConfigOptions;
+  guidIdConfig?: GuidIdConfigOptions;
+  snowflakeIdConfig?: SnowflakeIdConfigOptions;
 }
 ```
 
@@ -533,6 +670,50 @@ interface EnumConfigOptions {
   enum: any;                     // 枚举对象引用
   isMultiple?: boolean;          // 是否支持多选
   default?: any;                 // 默认值
+}
+```
+
+### AutoIncrementIdConfigOptions
+
+自增ID类型配置选项。
+
+```typescript
+interface AutoIncrementIdConfigOptions {
+  startValue?: number;           // 起始值，默认 1
+  increment?: number;            // 增量，默认 1
+  sequenceName?: string;         // 序列名称（PostgreSQL）
+  isPrimaryKey?: boolean;        // 是否为主键，默认 true
+  description?: string;          // 描述信息
+}
+```
+
+### GuidIdConfigOptions
+
+GUID ID类型配置选项。
+
+```typescript
+interface GuidIdConfigOptions {
+  version?: 'v1' | 'v4' | 'v5';  // GUID版本，默认 v4
+  format?: 'default' | 'braced' | 'binary' | 'urn';  // 格式，默认 default
+  isPrimaryKey?: boolean;        // 是否为主键，默认 true
+  description?: string;          // 描述信息
+  generateOnInsert?: boolean;    // 插入时自动生成，默认 true
+}
+```
+
+### SnowflakeIdConfigOptions
+
+Snowflake ID类型配置选项。
+
+```typescript
+interface SnowflakeIdConfigOptions {
+  machineId?: number;            // 机器ID，范围 0-1023，默认 0
+  datacenterId?: number;         // 数据中心ID，范围 0-31，默认 0
+  epoch?: number;                // 起始时间戳（毫秒），默认 2020-01-01 00:00:00 UTC
+  isPrimaryKey?: boolean;        // 是否为主键，默认 true
+  description?: string;          // 描述信息
+  generateOnInsert?: boolean;    // 插入时自动生成，默认 true
+  format?: 'number' | 'string';  // 输出格式，默认 number
 }
 ```
 
@@ -639,6 +820,24 @@ const mediaColumns = ColumnInfoService.getMediaColumns(User);
 
 // 获取枚举类型的列
 const enumColumns = ColumnInfoService.getEnumColumns(User);
+
+// 获取自增ID类型的列
+const autoIncrementIdColumns = ColumnInfoService.getAutoIncrementIdColumns(User);
+
+// 获取GUID ID类型的列
+const guidIdColumns = ColumnInfoService.getGuidIdColumns(User);
+
+// 获取Snowflake ID类型的列
+const snowflakeIdColumns = ColumnInfoService.getSnowflakeIdColumns(User);
+
+// 获取所有支持的类型
+const allTypes = ColumnInfoService.getAllSupportedTypes();
+
+// 获取ADB扩展类型
+const adbTypes = ColumnInfoService.getADBExtendTypes();
+
+// 获取TypeORM原生类型
+const typeormTypes = ColumnInfoService.getTypeORMTypes();
 ```
 
 ### EnumInfoService
@@ -715,6 +914,8 @@ const allEnums = await EnumMetadataService.getAllEnums(dataSource);
 - **迁移友好**：数据库迁移脚本正常生成
 - **元数据持久化**：枚举配置可选择性持久化到 `__enums__` 表
 - **AI 优化**：专为 AI 代码生成和可视化设计优化
+- **类型支持系统**：提供完整的类型查询和管理功能，支持 ADB 扩展类型和 TypeORM 原生类型
+- **统一命名规范**：所有 ADB 扩展类型使用 `adb-` 前缀，便于识别和管理
 
 ## 📚 目录结构
 
@@ -771,17 +972,147 @@ ADB-TypeORM/
 - 如遇到装饰器相关错误，请参考 [兼容性指南](./TYPESCRIPT_TYPEORM_COMPATIBILITY.md)
 
 ### 开发环境设置
+
+#### 1. 安装依赖
+
 ```bash
-# 安装依赖
+# 推荐使用 yarn
 yarn install
 
-# 构建项目
+# 或者使用 npm
+npm install
+```
+
+#### 2. 构建项目
+
+```bash
+# 使用 yarn 构建
 yarn build
 
+# 或者使用 npm 构建
+npm run build
+
+# 或者直接使用 TypeScript 编译器
 npx tsc
 
-# 运行测试
+# 监听模式构建（开发时使用）
+yarn dev
+# 或
+npm run dev
+```
+
+#### 3. 运行测试
+
+```bash
+# 运行所有测试
 yarn test
+
+# 或者使用 npm
+npm test
+
+# 运行特定测试文件
+yarn test -- --testPathPattern=TypeSupport.test.ts
+
+# 运行特定测试套件
+yarn test -- --testPathPattern=ADBEnum.test.ts
+```
+
+#### 4. 代码质量检查
+
+```bash
+# 运行 ESLint 检查
+yarn lint
+
+# 或者使用 npm
+npm run lint
+
+# 自动修复 ESLint 问题（需要手动添加脚本）
+yarn lint --fix
+```
+
+#### 5. 清理和发布
+
+```bash
+# 清理构建文件
+yarn clean
+
+# 或者使用 npm
+npm run clean
+
+# 构建并准备发布
+yarn prepublishOnly
+
+# 发布到 npm
+yarn publish
+
+# 或者使用 npm
+npm publish
+```
+
+#### 6. 开发工作流
+
+```bash
+# 完整的开发工作流
+yarn install    # 安装依赖
+yarn dev        # 启动监听模式构建
+yarn test       # 运行测试
+yarn lint       # 代码质量检查
+yarn build      # 构建生产版本
+yarn clean      # 清理构建文件
+```
+
+#### 7. 快速验证构建
+
+```bash
+# 一键验证构建是否正常
+yarn clean && yarn build && yarn test
+
+# 验证类型定义是否正确生成
+ls -la dist/
+# 应该看到 index.js, index.d.ts 等文件
+
+# 验证包内容
+yarn pack --dry-run
+# 检查将要发布的文件列表
+```
+
+#### 8. 故障排除
+
+```bash
+# 如果遇到构建问题，尝试清理后重新构建
+yarn clean && yarn build
+
+# 如果遇到依赖问题，重新安装
+rm -rf node_modules yarn.lock
+yarn install
+
+# 检查 TypeScript 版本兼容性
+npx tsc --version
+
+# 验证 TypeORM 版本
+yarn list typeorm
+
+# 检查 Node.js 版本
+node --version
+
+# 清理所有缓存
+yarn cache clean
+```
+
+#### 9. 构建优化建议
+
+```bash
+# 生产环境构建（优化版本）
+NODE_ENV=production yarn build
+
+# 检查构建产物大小
+du -sh dist/
+
+# 分析构建产物
+npx tsc --listFiles | wc -l
+
+# 验证构建产物完整性
+node -e "console.log(require('./dist/index.js'))"
 ```
 
 ## 🐛 已知问题

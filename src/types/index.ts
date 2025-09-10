@@ -19,9 +19,12 @@ export interface EntityInfoOptions {
 export interface ColumnInfoOptions {
   id: string;                    // 唯一标识，由设计器自动分配的短UUID
   label: string;                 // 字段显示名，注意：不是comment，因为TypeORM自带comment
-  extendType?: string;           // 扩展类型标识，如: "media", "enum" 等
+  extendType?: string;           // 扩展类型标识，如: "adb-media", "adb-enum", "adb-auto-increment-id", "adb-guid-id", "adb-snowflake-id" 等
   mediaConfig?: MediaConfigOptions;  // 媒体类型配置
   enumConfig?: EnumConfigOptions;    // 枚举类型配置
+  autoIncrementIdConfig?: AutoIncrementIdConfigOptions;  // 自增ID类型配置
+  guidIdConfig?: GuidIdConfigOptions;  // GUID ID类型配置
+  snowflakeIdConfig?: SnowflakeIdConfigOptions;  // Snowflake ID类型配置
 }
 
 // Media 配置类型
@@ -38,6 +41,35 @@ export interface EnumConfigOptions {
   enum: any;                     // 枚举对象引用
   isMultiple?: boolean;          // 是否支持多选，默认 false
   default?: any;                 // 默认值
+}
+
+// 自增ID配置类型
+export interface AutoIncrementIdConfigOptions {
+  startValue?: number;           // 起始值，默认 1
+  increment?: number;            // 增量，默认 1
+  sequenceName?: string;         // 序列名称（PostgreSQL）
+  isPrimaryKey?: boolean;        // 是否为主键，默认 true
+  description?: string;          // 描述信息
+}
+
+// GUID ID配置类型
+export interface GuidIdConfigOptions {
+  version?: 'v1' | 'v4' | 'v5';  // GUID版本，默认 v4
+  format?: 'default' | 'braced' | 'binary' | 'urn';  // 格式，默认 default
+  isPrimaryKey?: boolean;        // 是否为主键，默认 true
+  description?: string;          // 描述信息
+  generateOnInsert?: boolean;    // 插入时自动生成，默认 true
+}
+
+// Snowflake ID配置类型
+export interface SnowflakeIdConfigOptions {
+  machineId?: number;            // 机器ID，范围 0-1023，默认 0
+  datacenterId?: number;         // 数据中心ID，范围 0-31，默认 0
+  epoch?: number;                // 起始时间戳（毫秒），默认 2020-01-01 00:00:00 UTC
+  isPrimaryKey?: boolean;        // 是否为主键，默认 true
+  description?: string;          // 描述信息
+  generateOnInsert?: boolean;    // 插入时自动生成，默认 true
+  format?: 'number' | 'string';  // 输出格式，默认 number
 }
 
 // EnumInfo 相关类型

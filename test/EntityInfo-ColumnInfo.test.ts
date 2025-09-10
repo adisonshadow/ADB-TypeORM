@@ -143,7 +143,7 @@ describe('EntityInfo & ColumnInfo Tests', () => {
       
       const avatarColumn = mediaColumns.find(c => c.property === 'avatar');
       expect(avatarColumn).toBeDefined();
-      expect(avatarColumn?.info.extendType).toBe('media');
+      expect(avatarColumn?.info.extendType).toBe('adb-media');
       expect(avatarColumn?.info.mediaConfig?.mediaType).toBe('image');
       expect(avatarColumn?.info.mediaConfig?.isMultiple).toBe(false);
       
@@ -158,7 +158,7 @@ describe('EntityInfo & ColumnInfo Tests', () => {
       
       const statusColumn = enumColumns.find(c => c.property === 'status');
       expect(statusColumn).toBeDefined();
-      expect(statusColumn?.info.extendType).toBe('enum');
+      expect(statusColumn?.info.extendType).toBe('adb-enum');
       expect(statusColumn?.info.enumConfig?.isMultiple).toBe(false);
       
       const statusesColumn = enumColumns.find(c => c.property === 'statuses');
@@ -168,11 +168,11 @@ describe('EntityInfo & ColumnInfo Tests', () => {
 
     test('应该能够根据扩展类型获取列', () => {
       // 测试媒体类型列
-      const mediaColumns = ColumnInfoService.getColumnsByExtendType(User, 'media');
+      const mediaColumns = ColumnInfoService.getColumnsByExtendType(User, 'adb-media');
       expect(mediaColumns.length).toBe(2); // avatar 和 identityPhotos
       
       // 测试枚举类型列
-      const enumColumns = ColumnInfoService.getColumnsByExtendType(Order, 'enum');
+      const enumColumns = ColumnInfoService.getColumnsByExtendType(Order, 'adb-enum');
       expect(enumColumns.length).toBe(2); // status 和 statuses
     });
 
@@ -208,7 +208,7 @@ describe('EntityInfo & ColumnInfo Tests', () => {
       // 测试头像列（媒体类型）
       const avatarColumn = columns['avatar'];
       expect(avatarColumn).toBeDefined();
-      expect(avatarColumn.extendType).toBe('media');
+      expect(avatarColumn.extendType).toBe('adb-media');
       expect(avatarColumn.mediaConfig).toBeDefined();
       expect(avatarColumn.mediaConfig?.formats).toContain('jpg');
       expect(avatarColumn.mediaConfig?.maxSize).toBe(5);

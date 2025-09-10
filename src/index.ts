@@ -17,30 +17,49 @@ export * from './utils';
 // 重新导出 TypeORM 的核心装饰器，确保兼容性
 export { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
+// 导入所有模块用于默认导出
+import { EntityInfo } from './decorators/EntityInfo';
+import { ColumnInfo } from './decorators/ColumnInfo';
+import { EnumInfo } from './decorators/EnumInfo';
+import { EnumMetadata } from './entities';
+import { 
+  EntityInfoService, 
+  ColumnInfoService, 
+  EnumInfoService, 
+  EnumMetadataService, 
+  ADBEnum, 
+  Utils,
+  FunctionCallingsProvider,
+  getADBFunctionCallings,
+  getOpenAIFunctions,
+  getClaudeTools,
+  getFunctionsByCategory,
+  getNamingConventions
+} from './utils';
+
 // 默认导出
 export default {
   // 装饰器
-  EntityInfo: require('./decorators/EntityInfo').EntityInfo,
-  ColumnInfo: require('./decorators/ColumnInfo').ColumnInfo,
-  EnumInfo: require('./decorators/EnumInfo').EnumInfo,
-  // EnumItem: 已废弃，不再在默认导出中包含
+  EntityInfo,
+  ColumnInfo,
+  EnumInfo,
   
   // 实体
-  EnumMetadata: require('./entities').EnumMetadata,
+  EnumMetadata,
   
   // 工具类
-  EntityInfoService: require('./utils').EntityInfoService,
-  ColumnInfoService: require('./utils').ColumnInfoService,
-  EnumInfoService: require('./utils').EnumInfoService,
-  EnumMetadataService: require('./utils').EnumMetadataService,
-  ADBEnum: require('./utils').ADBEnum,
-  Utils: require('./utils').Utils,
+  EntityInfoService,
+  ColumnInfoService,
+  EnumInfoService,
+  EnumMetadataService,
+  ADBEnum,
+  Utils,
   
   // Function Calling 支持
-  FunctionCallingsProvider: require('./utils').FunctionCallingsProvider,
-  getADBFunctionCallings: require('./utils').getADBFunctionCallings,
-  getOpenAIFunctions: require('./utils').getOpenAIFunctions,
-  getClaudeTools: require('./utils').getClaudeTools,
-  getFunctionsByCategory: require('./utils').getFunctionsByCategory,
-  getNamingConventions: require('./utils').getNamingConventions,
+  FunctionCallingsProvider,
+  getADBFunctionCallings,
+  getOpenAIFunctions,
+  getClaudeTools,
+  getFunctionsByCategory,
+  getNamingConventions,
 };

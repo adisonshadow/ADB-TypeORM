@@ -110,14 +110,35 @@ export class ColumnInfoService {
    * 获取媒体类型的列
    */
   static getMediaColumns(entity: any): Array<{ property: string; info: ColumnInfoOptions }> {
-    return this.getColumnsByExtendType(entity, 'media');
+    return this.getColumnsByExtendType(entity, 'adb-media');
   }
 
   /**
    * 获取枚举类型的列
    */
   static getEnumColumns(entity: any): Array<{ property: string; info: ColumnInfoOptions }> {
-    return this.getColumnsByExtendType(entity, 'enum');
+    return this.getColumnsByExtendType(entity, 'adb-enum');
+  }
+
+  /**
+   * 获取自增ID类型的列
+   */
+  static getAutoIncrementIdColumns(entity: any): Array<{ property: string; info: ColumnInfoOptions }> {
+    return this.getColumnsByExtendType(entity, 'adb-auto-increment-id');
+  }
+
+  /**
+   * 获取GUID ID类型的列
+   */
+  static getGuidIdColumns(entity: any): Array<{ property: string; info: ColumnInfoOptions }> {
+    return this.getColumnsByExtendType(entity, 'adb-guid-id');
+  }
+
+  /**
+   * 获取Snowflake ID类型的列
+   */
+  static getSnowflakeIdColumns(entity: any): Array<{ property: string; info: ColumnInfoOptions }> {
+    return this.getColumnsByExtendType(entity, 'adb-snowflake-id');
   }
 
   /**
@@ -129,6 +150,66 @@ export class ColumnInfoService {
       property,
       result: validateColumnInfo(entity.prototype, property)
     }));
+  }
+
+  /**
+   * 获取所有支持的类型列表
+   * 包含 ADB 扩展类型和 TypeORM 原生类型
+   */
+  static getAllSupportedTypes(): Array<{ key: string; label: string; category: 'adb-extend' | 'typeorm-native' }> {
+    const adbExtendTypes = [
+      { key: 'adb-auto-increment-id', label: 'Auto Increment ID', category: 'adb-extend' as const },
+      { key: 'adb-guid-id', label: 'GUID ID', category: 'adb-extend' as const },
+      { key: 'adb-snowflake-id', label: 'Snowflake ID', category: 'adb-extend' as const },
+      { key: 'adb-enum', label: 'ADB Enum', category: 'adb-extend' as const },
+      { key: 'adb-media', label: 'ADB Media', category: 'adb-extend' as const }
+    ];
+
+    const typeormNativeTypes = [
+      { key: 'varchar', label: 'String', category: 'typeorm-native' as const },
+      { key: 'char', label: 'Fixed String', category: 'typeorm-native' as const },
+      { key: 'text', label: 'Text', category: 'typeorm-native' as const },
+      { key: 'int', label: 'Integer', category: 'typeorm-native' as const },
+      { key: 'bigint', label: 'Big Integer', category: 'typeorm-native' as const },
+      { key: 'smallint', label: 'Small Integer', category: 'typeorm-native' as const },
+      { key: 'tinyint', label: 'Tiny Integer', category: 'typeorm-native' as const },
+      { key: 'decimal', label: 'Decimal', category: 'typeorm-native' as const },
+      { key: 'float', label: 'Float', category: 'typeorm-native' as const },
+      { key: 'double', label: 'Double', category: 'typeorm-native' as const },
+      { key: 'boolean', label: 'Boolean', category: 'typeorm-native' as const },
+      { key: 'date', label: 'Date', category: 'typeorm-native' as const },
+      { key: 'datetime', label: 'DateTime', category: 'typeorm-native' as const },
+      { key: 'timestamp', label: 'Timestamp', category: 'typeorm-native' as const },
+      { key: 'time', label: 'Time', category: 'typeorm-native' as const },
+      { key: 'json', label: 'JSON', category: 'typeorm-native' as const },
+      { key: 'simple-array', label: 'Simple Array', category: 'typeorm-native' as const },
+      { key: 'simple-json', label: 'Simple JSON', category: 'typeorm-native' as const },
+      { key: 'uuid', label: 'UUID', category: 'typeorm-native' as const },
+      { key: 'enum', label: 'Enum', category: 'typeorm-native' as const },
+      { key: 'blob', label: 'Blob', category: 'typeorm-native' as const },
+      { key: 'binary', label: 'Binary', category: 'typeorm-native' as const },
+      { key: 'varbinary', label: 'Variable Binary', category: 'typeorm-native' as const }
+    ];
+
+    return [...adbExtendTypes, ...typeormNativeTypes];
+  }
+
+  /**
+   * 获取 ADB 扩展类型列表
+   */
+  static getADBExtendTypes(): Array<{ key: string; label: string }> {
+    return this.getAllSupportedTypes()
+      .filter(type => type.category === 'adb-extend')
+      .map(type => ({ key: type.key, label: type.label }));
+  }
+
+  /**
+   * 获取 TypeORM 原生类型列表
+   */
+  static getTypeORMTypes(): Array<{ key: string; label: string }> {
+    return this.getAllSupportedTypes()
+      .filter(type => type.category === 'typeorm-native')
+      .map(type => ({ key: type.key, label: type.label }));
   }
 }
 

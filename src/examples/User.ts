@@ -56,7 +56,7 @@ export class User {
   @ColumnInfo({
     id: "field_avatar_001",
     label: "用户头像",
-    extendType: "media",
+    extendType: "adb-media",
     mediaConfig: {
       mediaType: "image",
       formats: ["jpg", "png", "gif", "webp"],
@@ -75,7 +75,7 @@ export class User {
   @ColumnInfo({
     id: "field_identity_photos_001",
     label: "证件照片",
-    extendType: "media",
+    extendType: "adb-media",
     mediaConfig: {
       mediaType: "image",
       formats: ["jpg", "png"],

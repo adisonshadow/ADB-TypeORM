@@ -37,7 +37,7 @@ export class Order {
   @ColumnInfo({
     id: "field_order_status_001",
     label: "订单状态",
-    extendType: "enum",
+    extendType: "adb-enum",
     enumConfig: {
       enum: OrderStatus,
       isMultiple: false,
@@ -55,7 +55,7 @@ export class Order {
   @ColumnInfo({
     id: "field_order_statuses_001",
     label: "订单状态集合",
-    extendType: "enum",
+    extendType: "adb-enum",
     enumConfig: {
       enum: OrderStatus,
       isMultiple: true,

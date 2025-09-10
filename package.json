@@ -1,16 +1,28 @@
 {
   "name": "adb-typeorm",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "ADB-TypeORM - Enhanced TypeORM framework for AI design and convenient management",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "jest",
     "lint": "eslint src/**/*.ts",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "pre-publish": "node scripts/pre-publish.js",
+    "publish:check": "npm run pre-publish && npm pack --dry-run",
+    "publish:patch": "npm version patch && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:major": "npm version major && npm publish"
   },
   "keywords": [
     "typeorm",
@@ -20,18 +32,25 @@
     "ai",
     "enhanced",
     "metadata",
-    "typescript"
+    "typescript",
+    "adb",
+    "enum",
+    "media",
+    "id",
+    "guid",
+    "snowflake",
+    "function-calling"
   ],
   "author": "ADB Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/adb-typeorm.git"
+    "url": "https://github.com/adisonshadow/ADB-TypeORM.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/adb-typeorm/issues"
+    "url": "https://github.com/adisonshadow/ADB-TypeORM/issues"
   },
-  "homepage": "https://github.com/your-username/adb-typeorm#readme",
+  "homepage": "https://github.com/adisonshadow/ADB-TypeORM#readme",
   "dependencies": {
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.25"

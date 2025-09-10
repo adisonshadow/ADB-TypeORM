@@ -90,7 +90,7 @@ export function getColumnsByExtendType(target: any, extendType: string): Array<{
  * @returns 媒体列信息数组
  */
 export function getMediaColumns(target: any): Array<{ property: string; info: ColumnInfoOptions }> {
-  return getColumnsByExtendType(target, 'media');
+  return getColumnsByExtendType(target, 'adb-media');
 }
 
 /**
@@ -100,7 +100,37 @@ export function getMediaColumns(target: any): Array<{ property: string; info: Co
  * @returns 枚举列信息数组
  */
 export function getEnumColumns(target: any): Array<{ property: string; info: ColumnInfoOptions }> {
-  return getColumnsByExtendType(target, 'enum');
+return getColumnsByExtendType(target, 'adb-enum');
+}
+
+/**
+ * 获取自增ID类型的列
+ * 
+ * @param target Entity 类
+ * @returns 自增ID列信息数组
+ */
+export function getAutoIncrementIdColumns(target: any): Array<{ property: string; info: ColumnInfoOptions }> {
+  return getColumnsByExtendType(target, 'adb-auto-increment-id');
+}
+
+/**
+ * 获取GUID ID类型的列
+ * 
+ * @param target Entity 类
+ * @returns GUID ID列信息数组
+ */
+export function getGuidIdColumns(target: any): Array<{ property: string; info: ColumnInfoOptions }> {
+  return getColumnsByExtendType(target, 'adb-guid-id');
+}
+
+/**
+ * 获取Snowflake ID类型的列
+ * 
+ * @param target Entity 类
+ * @returns Snowflake ID列信息数组
+ */
+export function getSnowflakeIdColumns(target: any): Array<{ property: string; info: ColumnInfoOptions }> {
+  return getColumnsByExtendType(target, 'adb-snowflake-id');
 }
 
 /**
@@ -128,12 +158,24 @@ export function validateColumnInfo(target: any, propertyKey: string | symbol): {
   }
 
   // 验证扩展类型配置
-  if (info.extendType === 'media' && !info.mediaConfig) {
-    errors.push('Media type column must provide mediaConfig');
+  if (info.extendType === 'adb-media' && !info.mediaConfig) {
+    errors.push('ADB Media type column must provide mediaConfig');
   }
 
-  if (info.extendType === 'enum' && !info.enumConfig) {
-    errors.push('Enum type column must provide enumConfig');
+  if (info.extendType === 'adb-enum' && !info.enumConfig) {
+    errors.push('ADB Enum type column must provide enumConfig');
+  }
+
+  if (info.extendType === 'adb-auto-increment-id' && !info.autoIncrementIdConfig) {
+    errors.push('ADB Auto-increment-id type column must provide autoIncrementIdConfig');
+  }
+
+  if (info.extendType === 'adb-guid-id' && !info.guidIdConfig) {
+    errors.push('ADB Guid-id type column must provide guidIdConfig');
+  }
+
+  if (info.extendType === 'adb-snowflake-id' && !info.snowflakeIdConfig) {
+    errors.push('ADB Snowflake-id type column must provide snowflakeIdConfig');
   }
 
   // 验证媒体配置
@@ -159,6 +201,49 @@ export function validateColumnInfo(target: any, propertyKey: string | symbol): {
     
     if (!enumRef) {
       errors.push('EnumConfig.enum is required');
+    }
+  }
+
+  // 验证自增ID配置
+  if (info.autoIncrementIdConfig) {
+    const { startValue, increment } = info.autoIncrementIdConfig;
+    
+    if (startValue !== undefined && startValue < 1) {
+      errors.push('AutoIncrementIdConfig.startValue must be greater than 0');
+    }
+    
+    if (increment !== undefined && increment < 1) {
+      errors.push('AutoIncrementIdConfig.increment must be greater than 0');
+    }
+  }
+
+  // 验证GUID ID配置
+  if (info.guidIdConfig) {
+    const { version, format } = info.guidIdConfig;
+    
+    if (version && !['v1', 'v4', 'v5'].includes(version)) {
+      errors.push('GuidIdConfig.version must be one of: v1, v4, v5');
+    }
+    
+    if (format && !['default', 'braced', 'binary', 'urn'].includes(format)) {
+      errors.push('GuidIdConfig.format must be one of: default, braced, binary, urn');
+    }
+  }
+
+  // 验证Snowflake ID配置
+  if (info.snowflakeIdConfig) {
+    const { machineId, datacenterId, format } = info.snowflakeIdConfig;
+    
+    if (machineId !== undefined && (machineId < 0 || machineId > 1023)) {
+      errors.push('SnowflakeIdConfig.machineId must be between 0 and 1023');
+    }
+    
+    if (datacenterId !== undefined && (datacenterId < 0 || datacenterId > 31)) {
+      errors.push('SnowflakeIdConfig.datacenterId must be between 0 and 31');
+    }
+    
+    if (format && !['number', 'string'].includes(format)) {
+      errors.push('SnowflakeIdConfig.format must be one of: number, string');
     }
   }
 
